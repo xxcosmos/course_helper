@@ -17,7 +17,7 @@ import java.util.List;
 
 import static me.xiaoyuu.course_helper.constant.SoapConstant.*;
 
-public class SOAPUtil {
+public class SoapUtil {
 
 
     /**
