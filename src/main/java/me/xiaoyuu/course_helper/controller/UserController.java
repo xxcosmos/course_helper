@@ -4,6 +4,7 @@ import cn.binarywang.wx.miniapp.api.WxMaUserService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.xiaoyuu.course_helper.config.jwt.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.User;
@@ -11,6 +12,7 @@ import me.xiaoyuu.course_helper.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -25,31 +27,23 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Resource
     private UserService userService;
+
     @Resource
-    private WxMaUserService wxMaUserService;
+    JwtConfig jwtConfig;
 
     @GetMapping("/login")
-    public Result login(String code, String encryptedData, String ivStr) {
-        if (StringUtils.isBlank(code)) {
-            return ResultGenerator.genFailResult("jscode needed");
-        }
+    public Result login(String code) {
+        User user = new User();
+        user.setOpenid("xxx");
+        user.setSessionKey("sdfsdf");
+        String token = jwtConfig.getToken(user);
+        return ResultGenerator.genSuccessResult(token);
+    }
 
-        try {
-            WxMaJscode2SessionResult sessionInfo = wxMaUserService.getSessionInfo(code);
-            WxMaUserInfo userInfo = wxMaUserService.getUserInfo(sessionInfo.getSessionKey(), encryptedData, ivStr);
-            User user = userService.findBy("openid", sessionInfo.getOpenid());
-            if (user == null) {
-                user = new User(userInfo);
-
-
-            }
-
-        } catch (WxErrorException e) {
-            this.logger.error(e.getMessage(), e);
-        }
-        return null;
+    @RequiresAuthentication
+    @GetMapping("/hello")
+    public Result sayHello() {
+        return ResultGenerator.genSuccessResult("hello");
     }
 }

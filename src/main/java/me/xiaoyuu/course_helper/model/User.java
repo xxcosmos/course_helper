@@ -19,6 +19,22 @@ public class User {
      */
     private String openid;
 
+    private String sessionKey;
+
+    public User(WxMaUserInfo userInfo, String sessionKey) {
+        this.openid = userInfo.getOpenId();
+        this.avatarUrl = userInfo.getAvatarUrl();
+        this.city = userInfo.getCity();
+        this.province = userInfo.getProvince();
+        this.gender = Integer.valueOf(userInfo.getGender());
+        this.nickname = userInfo.getNickName();
+        this.sessionKey = sessionKey;
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
     /**
      * 用户昵称
      */
@@ -68,13 +84,8 @@ public class User {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public User(WxMaUserInfo userInfo) {
-        this.openid = userInfo.getOpenId();
-        this.avatarUrl = userInfo.getAvatarUrl();
-        this.city = userInfo.getCity();
-        this.province = userInfo.getProvince();
-        this.gender = Integer.valueOf(userInfo.getGender());
-        this.nickname = userInfo.getNickName();
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     public User() {

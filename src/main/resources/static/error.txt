@@ -1,0 +1,14 @@
+Error creating bean with name 'methodValidationPostProcessor'
+defined in class path resource [org/springframework/boot/autoconfigure/validation/ValidationAutoConfiguration.class]:
+Unsatisfied dependency expressed through method 'methodValidationPostProcessor' parameter 0;
+nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException:
+Error creating bean with name 'factory' defined in class path resource
+ [me/xiaoyuu/course_helper/config/shiro/ShiroConfig.class]:
+ Unsatisfied dependency expressed through method 'factory' parameter 0;
+ nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException:
+ Error creating bean with name 'securityManager' defined in class path resource
+ [me/xiaoyuu/course_helper/config/shiro/ShiroConfig.class]: Unsatisfied dependency expressed through method 'securityManager' parameter 0;
+ nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException:
+ No qualifying bean of type 'me.xiaoyuu.course_helper.config.shiro.ShiroRealmConfig' available:
+ expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	at org.springframework.beans.factory.support.ConstructorResolv
