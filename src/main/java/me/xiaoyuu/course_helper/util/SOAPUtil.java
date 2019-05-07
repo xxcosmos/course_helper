@@ -2,6 +2,7 @@ package me.xiaoyuu.course_helper.util;
 
 import com.alibaba.fastjson.JSONArray;
 import me.xiaoyuu.course_helper.constant.SoapConstant;
+import me.xiaoyuu.course_helper.dto.ChosenCourseDTO;
 import me.xiaoyuu.course_helper.dto.GradeInfoDTO;
 
 import javax.xml.soap.*;
@@ -9,7 +10,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static me.xiaoyuu.course_helper.constant.SoapConstant.*;
@@ -60,7 +63,7 @@ public class SOAPUtil {
         return SOAPConnectionFactory.newInstance().createConnection().call(request, TEACHING_SYSTEM_URL);
     }
 
-    public static List<GradeInfoDTO> getStudentGradeList(String studentId) throws SOAPException {
+    public static List<GradeInfoDTO> getStudentGradeDTOList(String studentId) throws SOAPException {
         List<String> params = new ArrayList<>();
         params.add(studentId);
         params.add(TIME_STAMP);
@@ -71,7 +74,40 @@ public class SOAPUtil {
         return JSONArray.parseArray(json, GradeInfoDTO.class);
     }
 
-    public static String getChosenCourseJSON(String studentId, String semester) throws SOAPException {
+    //在2019的上半年 你可以查到2019-2020-1 之前
+    //在2019的下半年 你可以查到2019-2020-2 之前
+    public static List<ChosenCourseDTO> getAllChosenCourseDTOList(String studentId) throws SOAPException {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int enrollYear = Integer.valueOf(studentId.substring(0, 4));
+        List<String> semesterList = new ArrayList<>();
+        for (int i = enrollYear; i <= currentYear; i++) {
+            semesterList.add(i + "-" + (i + 1) + "-" + "1");
+            semesterList.add(i + "-" + (i + 1) + "-" + "2");
+
+        }
+        List<ChosenCourseDTO> chosenCourseDTOList = new ArrayList<>();
+        for (String semester : semesterList) {
+            List<ChosenCourseDTO> list = getChosenCourseDTOListWithSemester(studentId, semester);
+            if (list != null) {
+                chosenCourseDTOList.addAll(list);
+            }
+        }
+
+        return chosenCourseDTOList;
+    }
+
+    public static void main(String[] args) {
+        try {
+            List<ChosenCourseDTO> allChosenCourseDTOList = getAllChosenCourseDTOList("201713137042");
+            for (ChosenCourseDTO chosenCourseDTO : allChosenCourseDTOList) {
+                System.out.println(chosenCourseDTO);
+            }
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<ChosenCourseDTO> getChosenCourseDTOListWithSemester(String studentId, String semester) throws SOAPException {
         List<String> params = new ArrayList<>();
         params.add(studentId);
         params.add(semester);
@@ -79,6 +115,11 @@ public class SOAPUtil {
         params.add(HASH);
         SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_CHOSEN_COURSE);
         SOAPMessage response = getSOAPResponse(request);
-        return response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
+        String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
+        if (json.equals("没有数据")) {
+            return null;
+        }
+        return JSONArray.parseArray(json, ChosenCourseDTO.class);
+
     }
 }
