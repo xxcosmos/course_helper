@@ -98,7 +98,7 @@ public class SoapUtil {
 
     public static void main(String[] args) {
         try {
-            List<ChosenCourseDTO> allChosenCourseDTOList = getAllChosenCourseDTOList("201713137042");
+            List<ChosenCourseDTO> allChosenCourseDTOList = getAllChosenCourseDTOList("201713137104");
             for (ChosenCourseDTO chosenCourseDTO : allChosenCourseDTOList) {
                 System.out.println(chosenCourseDTO);
             }

@@ -1,4 +1,4 @@
-package me.xiaoyuu.course_helper.config.RestTemplate;
+package me.xiaoyuu.course_helper.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

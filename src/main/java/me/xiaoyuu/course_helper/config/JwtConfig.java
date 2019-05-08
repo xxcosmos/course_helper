@@ -1,27 +1,31 @@
-package me.xiaoyuu.course_helper.config.jwt;
+package me.xiaoyuu.course_helper.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import me.xiaoyuu.course_helper.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-@Component
+@Configuration
 public class JwtConfig {
-    private static final String SECRET_KEY = "5371f568a45e5ab1f442c38e0932aef24447139b";
-    private static long expire_time = 3600;
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    @Value("${jwt.secret-key}")
+    private static String SECRET_KEY;
+    @Value("${jwt.expired-time}")
+    private static long expire_time;
+    @Resource
+    private RedisTemplate redisTemplate;
 
-    public String getToken(User user) {
+
+    public String generateToken(User user) {
         String jwtId = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         String token = JWT.create().withClaim("openid", user.getOpenid())
@@ -33,9 +37,9 @@ public class JwtConfig {
         return token;
     }
 
-    public boolean verifyToken(String token) {
+    boolean verifyToken(String token) {
         try {
-            String redisToken = redisTemplate.opsForValue().get("JWT-SESSION-" + getJwtIdByToken(token));
+            String redisToken = (String) redisTemplate.opsForValue().get("JWT-SESSION-" + getJwtIdByToken(token));
             if (redisToken == null || !redisToken.equals(token)) return false;
 
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
