@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import me.xiaoyuu.course_helper.constant.SoapConstant;
 import me.xiaoyuu.course_helper.dto.ChosenCourseDTO;
 import me.xiaoyuu.course_helper.dto.GradeInfoDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.xml.soap.*;
 import javax.xml.transform.Transformer;
@@ -18,7 +21,7 @@ import java.util.List;
 import static me.xiaoyuu.course_helper.constant.SoapConstant.*;
 
 public class SoapUtil {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
 
     /**
      * 得到SOAP请求对象
@@ -71,6 +74,10 @@ public class SoapUtil {
         SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_STUDENT_GRADE);
         SOAPMessage response = getSOAPResponse(request);
         String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
+        if (json.contains("服务器错误")) {
+            logger.error(json + " " + studentId);
+            return null;
+        }
         return JSONArray.parseArray(json, GradeInfoDTO.class);
     }
 
@@ -98,10 +105,9 @@ public class SoapUtil {
 
     public static void main(String[] args) {
         try {
-            List<ChosenCourseDTO> allChosenCourseDTOList = getAllChosenCourseDTOList("201713137104");
-            for (ChosenCourseDTO chosenCourseDTO : allChosenCourseDTOList) {
-                System.out.println(chosenCourseDTO);
-            }
+            List<GradeInfoDTO> list = getStudentGradeDTOList("*");
+            //  List<ChosenCourseDTO>chosenCourseDTOList = getAllChosenCourseDTOList("*");
+            System.out.println(list);
         } catch (SOAPException e) {
             e.printStackTrace();
         }

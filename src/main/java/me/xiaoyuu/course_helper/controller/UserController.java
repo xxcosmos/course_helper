@@ -51,6 +51,11 @@ public class UserController {
             user = weixinService.getUser(weixinAuthDTO, weixinUserInfoDTO);
             userService.save(user);
         }
+        //sessionKey过期 则更新
+        if (!user.getSessionKey().equals(weixinAuthDTO.getSessionKey())) {
+            user.setSessionKey(weixinAuthDTO.getSessionKey());
+            userService.update(user);
+        }
         String token = jwtConfig.generateToken(user);
         return ResultGenerator.genSuccessResult(token);
 
