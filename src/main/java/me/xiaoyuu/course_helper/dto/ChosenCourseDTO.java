@@ -3,7 +3,6 @@ package me.xiaoyuu.course_helper.dto;
 public class ChosenCourseDTO {
     private String dwmc;
     private String kcxzmc;
-
     private String kcsxm;
     private String jsxm;
     private String kcxzm;

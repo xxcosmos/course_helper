@@ -1,6 +1,6 @@
 package me.xiaoyuu.course_helper.dto;
 
-public class CourseInfoDTO {
+public class RawCourseInfoDTO {
     String jx02id;
 
     //获取选课阶段方法的返回值
