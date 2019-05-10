@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -18,5 +19,10 @@ import javax.annotation.Resource;
 public class StudentInfoServiceImpl extends AbstractService<StudentInfo> implements StudentInfoService {
     @Resource
     private StudentInfoMapper studentInfoMapper;
+
+
+    public List<StudentInfo> findByGrade(String grade) {
+        return studentInfoMapper.selectByGrade(grade);
+    }
 
 }

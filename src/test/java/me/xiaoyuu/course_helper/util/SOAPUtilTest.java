@@ -74,6 +74,7 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
                 }
                 for (ChosenCourseDTO chosenCourseDTO : chosenCourseDTOList) {
                     RawCourseInfo rawCourseInfo = new RawCourseInfo();
+
                     rawCourseInfo.setCourseCode(chosenCourseDTO.getKch());
                     rawCourseInfo.setTeacherName(chosenCourseDTO.getJsxm());
                     rawCourseInfo.setCourseCredit(String.valueOf(chosenCourseDTO.getXf()));
@@ -85,8 +86,29 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
                     rawCourseInfo.setKcsx(chosenCourseDTO.getKcsx());
                     rawCourseInfo.setSzkcfl(chosenCourseDTO.getSzkcfl());
                     rawCourseInfo.setUnitName(chosenCourseDTO.getDwmc());
+
                     rawCourseInfoService.savetWithIgnore(rawCourseInfo);
                 }
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    public void test3() {
+        List<StudentInfo> studentInfoList = studentInfoService.findByGrade("2017");
+        for (StudentInfo studentInfo : studentInfoList) {
+            String studentId = studentInfo.getStudentId();
+            try {
+                List<ChosenCourseDTO> allChosenCourseDTOList = SoapUtil.getAllChosenCourseDTOList(studentId);
+                List<GradeInfoDTO> studentGradeDTOList = SoapUtil.getStudentGradeDTOList(studentId);
+                if (allChosenCourseDTOList == null || studentGradeDTOList == null) {
+                    logger.error(studentId + " error!");
+                    continue;
+                }
+
+
             } catch (SOAPException e) {
                 e.printStackTrace();
             }

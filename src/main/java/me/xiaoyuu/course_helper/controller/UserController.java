@@ -1,10 +1,5 @@
 package me.xiaoyuu.course_helper.controller;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
@@ -14,6 +9,7 @@ import me.xiaoyuu.course_helper.dto.WeixinUserInfoDTO;
 import me.xiaoyuu.course_helper.model.User;
 import me.xiaoyuu.course_helper.service.UserService;
 import me.xiaoyuu.course_helper.service.WeixinService;
+import me.xiaoyuu.course_helper.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +50,7 @@ public class UserController {
         //sessionKey过期 则更新
         if (!user.getSessionKey().equals(weixinAuthDTO.getSessionKey())) {
             user.setSessionKey(weixinAuthDTO.getSessionKey());
+            user.setUpdateTime(null);
             userService.update(user);
         }
         String token = jwtConfig.generateToken(user);
@@ -61,10 +58,11 @@ public class UserController {
 
     }
 
-
-    @GetMapping("/hello")
-    public Result sayHello(@RequestHeader(name = "authorization") String token) {
-        String openId = jwtConfig.getOpenIdByToken(token);
-        return ResultGenerator.genSuccessResult(openId);
+    @GetMapping("/{id}")
+    public Result getUserInfo(@PathVariable int id) {
+        User user = userService.findById(id);
+        UserVO userVO = new UserVO(user);
+        return ResultGenerator.genSuccessResult(userVO);
     }
+
 }

@@ -12,4 +12,10 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+
+    <select id="selectByGrade" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select id, student_id, student_name, major_code, create_time, update_time
+        from student_info
+        where student_id like concat(${grade}, '%')
+    </select>
 </mapper>
