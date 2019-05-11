@@ -13,4 +13,11 @@
         <result column="course_type_name" jdbcType="VARCHAR" property="courseTypeName"/>
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
     </resultMap>
+
+    <insert id="insertWithIgnore" parameterType="me.xiaoyuu.course_helper.model.Course">
+        insert ignore into course(course_code, course_name, course_credit, course_hour, course_type, course_type_name,
+                                  unit_name)
+        VALUES (#{course.courseCode}, #{course.courseName}, #{course.courseCredit}, #{course.courseHour},
+                #{course.courseType}, #{course.courseTypeName}, #{course.unitName})
+    </insert>
 </mapper>

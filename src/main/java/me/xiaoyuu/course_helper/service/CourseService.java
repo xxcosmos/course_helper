@@ -9,4 +9,6 @@ import me.xiaoyuu.course_helper.core.service.Service;
  */
 public interface CourseService extends Service<Course> {
 
+    int saveWithIgnore(Course course);
+
 }

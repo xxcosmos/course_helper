@@ -13,8 +13,8 @@ public class Grade {
     @Column(name = "student_id")
     private String studentId;
 
-    @Column(name = "course_id")
-    private Integer courseId;
+    @Column(name = "course_code")
+    private String courseCode;
 
     private String grade;
 
@@ -23,6 +23,9 @@ public class Grade {
 
     @Column(name = "grade_type_name")
     private String gradeTypeName;
+
+    @Column(name = "teacher_name")
+    private String teacherName;
 
     /**
      * 获取id
@@ -57,17 +60,17 @@ public class Grade {
     }
 
     /**
-     * @return course_id
+     * @return course_code
      */
-    public Integer getCourseId() {
-        return courseId;
+    public String getCourseCode() {
+        return courseCode;
     }
 
     /**
-     * @param courseId
+     * @param courseCode
      */
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 
     /**
@@ -110,5 +113,19 @@ public class Grade {
      */
     public void setGradeTypeName(String gradeTypeName) {
         this.gradeTypeName = gradeTypeName;
+    }
+
+    /**
+     * @return teacher_name
+     */
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    /**
+     * @param teacherName
+     */
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

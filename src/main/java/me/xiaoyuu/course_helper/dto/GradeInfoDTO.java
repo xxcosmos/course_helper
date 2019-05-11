@@ -7,13 +7,13 @@ public class GradeInfoDTO {
     private String kcxzmc;
     private String ksxzmc;
     private String xq;
-    private int jd;
+    private String jd;
     private String cjbsmc;
     private String zcj;
     private String kclbmc;
-    private int zxs;
+    private String zxs;
     private String kcmc;
-    private double xf;
+    private String xf;
 
     @Override
     public String toString() {
@@ -82,13 +82,6 @@ public class GradeInfoDTO {
         this.xq = xq;
     }
 
-    public int getJd() {
-        return jd;
-    }
-
-    public void setJd(int jd) {
-        this.jd = jd;
-    }
 
     public String getCjbsmc() {
         return cjbsmc;
@@ -114,13 +107,6 @@ public class GradeInfoDTO {
         this.kclbmc = kclbmc;
     }
 
-    public int getZxs() {
-        return zxs;
-    }
-
-    public void setZxs(int zxs) {
-        this.zxs = zxs;
-    }
 
     public String getKcmc() {
         return kcmc;
@@ -130,11 +116,27 @@ public class GradeInfoDTO {
         this.kcmc = kcmc;
     }
 
-    public double getXf() {
+    public String getJd() {
+        return jd;
+    }
+
+    public void setJd(String jd) {
+        this.jd = jd;
+    }
+
+    public String getZxs() {
+        return zxs;
+    }
+
+    public void setZxs(String zxs) {
+        this.zxs = zxs;
+    }
+
+    public String getXf() {
         return xf;
     }
 
-    public void setXf(double xf) {
+    public void setXf(String xf) {
         this.xf = xf;
     }
 }

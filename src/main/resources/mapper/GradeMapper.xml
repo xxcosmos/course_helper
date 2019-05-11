@@ -7,9 +7,15 @@
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
-        <result column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="course_code" jdbcType="VARCHAR" property="courseCode"/>
         <result column="grade" jdbcType="VARCHAR" property="grade"/>
         <result column="grade_point" jdbcType="VARCHAR" property="gradePoint"/>
         <result column="grade_type_name" jdbcType="VARCHAR" property="gradeTypeName"/>
+        <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
     </resultMap>
+    <insert id="insertWithIgnore" parameterType="me.xiaoyuu.course_helper.model.Grade">
+        insert ignore into grade (student_id, course_code, grade, grade_point, grade_type_name, teacher_name)
+        VALUES (#{grade.studentId}, #{grade.courseCode}, #{grade.grade}, #{grade.gradePoint}, #{grade.gradeTypeName},
+                #{grade.teacherName})
+    </insert>
 </mapper>

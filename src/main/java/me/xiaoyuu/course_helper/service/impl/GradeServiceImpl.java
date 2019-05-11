@@ -19,4 +19,8 @@ public class GradeServiceImpl extends AbstractService<Grade> implements GradeSer
     @Resource
     private GradeMapper gradeMapper;
 
+    @Override
+    public int saveWithIgnore(Grade grade) {
+        return gradeMapper.insertWithIgnore(grade);
+    }
 }

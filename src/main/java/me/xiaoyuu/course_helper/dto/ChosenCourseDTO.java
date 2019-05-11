@@ -1,34 +1,15 @@
 package me.xiaoyuu.course_helper.dto;
 
 public class ChosenCourseDTO {
+
     private String dwmc;
     private String kcxzmc;
     private String kcsxm;
     private String jsxm;
-    private String kcxzm;
-    private String szkcfl;
     private String kch;
     private int zxs;
-    private String kcsx;
     private String kcmc;
-    private double xf;
-
-    @Override
-    public String toString() {
-        return "ChosenCourseDTO{" +
-                "dwmc='" + dwmc + '\'' +
-                ", kcxzmc='" + kcxzmc + '\'' +
-                ", kcsxm='" + kcsxm + '\'' +
-                ", jsxm='" + jsxm + '\'' +
-                ", kcxzm='" + kcxzm + '\'' +
-                ", szkcfl='" + szkcfl + '\'' +
-                ", kch='" + kch + '\'' +
-                ", zxs=" + zxs +
-                ", kcsx='" + kcsx + '\'' +
-                ", kcmc='" + kcmc + '\'' +
-                ", xf=" + xf +
-                '}';
-    }
+    private String xf;
 
     public String getDwmc() {
         return dwmc;
@@ -62,22 +43,6 @@ public class ChosenCourseDTO {
         this.jsxm = jsxm;
     }
 
-    public String getKcxzm() {
-        return kcxzm;
-    }
-
-    public void setKcxzm(String kcxzm) {
-        this.kcxzm = kcxzm;
-    }
-
-    public String getSzkcfl() {
-        return szkcfl;
-    }
-
-    public void setSzkcfl(String szkcfl) {
-        this.szkcfl = szkcfl;
-    }
-
     public String getKch() {
         return kch;
     }
@@ -94,14 +59,6 @@ public class ChosenCourseDTO {
         this.zxs = zxs;
     }
 
-    public String getKcsx() {
-        return kcsx;
-    }
-
-    public void setKcsx(String kcsx) {
-        this.kcsx = kcsx;
-    }
-
     public String getKcmc() {
         return kcmc;
     }
@@ -110,11 +67,11 @@ public class ChosenCourseDTO {
         this.kcmc = kcmc;
     }
 
-    public double getXf() {
+    public String getXf() {
         return xf;
     }
 
-    public void setXf(double xf) {
+    public void setXf(String xf) {
         this.xf = xf;
     }
 }

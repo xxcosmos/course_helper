@@ -19,4 +19,8 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
     @Resource
     private CourseMapper courseMapper;
 
+    @Override
+    public int saveWithIgnore(Course course) {
+        return courseMapper.insertWithIgnore(course);
+    }
 }
