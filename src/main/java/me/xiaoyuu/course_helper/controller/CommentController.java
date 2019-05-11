@@ -8,6 +8,7 @@ import me.xiaoyuu.course_helper.service.CommentService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.vo.CommentVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 
@@ -24,17 +25,39 @@ public class CommentController {
     @Resource
     private CommentService commentService;
 
+    /**
+     * 添加评论
+     *
+     * @param comment
+     * @return
+     */
     @PostMapping
     public Result add(Comment comment) {
+        if (StringUtils.isBlank(comment.getContent())) {
+            return ResultGenerator.genFailResult("评论内容为空");
+        }
+        if (comment.getFromId() == null || comment.getPid() == null) {
+            return ResultGenerator.genFailResult("请求参数有误");
+        }
         commentService.save(comment);
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 通过评论id 删除评论
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        commentService.deleteById(id);
+        if (id == null) {
+            return ResultGenerator.genFailResult("缺少参数");
+        }
+        commentService.deleteCascadeById(id);
         return ResultGenerator.genSuccessResult();
     }
+
 
     /**
      * 得到课程评论列表

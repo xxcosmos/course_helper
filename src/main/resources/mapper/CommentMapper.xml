@@ -15,6 +15,7 @@
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="child_comment_num" jdbcType="INTEGER" property="childCommentNum"/>
     </resultMap>
 
     <select id="selectByPid" resultMap="BaseResultMap">
@@ -27,10 +28,11 @@
                like_num,
                content,
                create_time,
-               update_time
+               update_time,
+               child_comment_num
         from comment
         where pid = #{pid}
-        order by create_time
+        order by create_time desc
     </select>
 
     <select id="selectByOwnerIdAndType" resultMap="BaseResultMap">
@@ -43,9 +45,16 @@
                like_num,
                content,
                create_time,
-               update_time
+               update_time,
+               child_comment_num
         from comment
         where owner_id = #{ownerId}
-          and type = #{type}
+        order by like_num desc
     </select>
+
+    <update id="addLike">
+        update comment
+        set like_num = like_num + 1
+        where id = #{id}
+    </update>
 </mapper>

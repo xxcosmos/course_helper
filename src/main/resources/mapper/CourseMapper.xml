@@ -20,4 +20,12 @@
         VALUES (#{course.courseCode}, #{course.courseName}, #{course.courseCredit}, #{course.courseHour},
                 #{course.courseType}, #{course.courseTypeName}, #{course.unitName})
     </insert>
+
+    <select id="selectListByKeyword" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select course_code, course_name, course_credit, course_hour, course_type, course_type_name, unit_name
+        from course
+        where course_name like concat('%', #{keyword}, '%')
+
+    </select>
+
 </mapper>

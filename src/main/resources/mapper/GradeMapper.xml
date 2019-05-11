@@ -13,9 +13,19 @@
         <result column="grade_type_name" jdbcType="VARCHAR" property="gradeTypeName"/>
         <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
     </resultMap>
+
     <insert id="insertWithIgnore" parameterType="me.xiaoyuu.course_helper.model.Grade">
         insert ignore into grade (student_id, course_code, grade, grade_point, grade_type_name, teacher_name)
         VALUES (#{grade.studentId}, #{grade.courseCode}, #{grade.grade}, #{grade.gradePoint}, #{grade.gradeTypeName},
                 #{grade.teacherName})
     </insert>
+
+    <select id="selectTeacherInfoByCourseCode" parameterType="java.lang.String"
+            resultType="me.xiaoyuu.course_helper.dto.TeacherInfoDTO">
+        select teacher_name teacherName, sum(grade) / count(grade) average
+        from grade
+        where course_code = #{courseCode}
+          and grade >= 60
+        group by teacher_name
+    </select>
 </mapper>

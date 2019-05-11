@@ -28,4 +28,13 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
         return commentMapper.selectByOwnerIdAndType(ownerId, type);
     }
 
+    public void deleteCascadeById(int id) {
+        List<Comment> commentList = findByPid(id);
+        for (Comment comment : commentList) {
+            deleteById(comment.getId());
+        }
+        deleteById(id);
+
+    }
+
 }

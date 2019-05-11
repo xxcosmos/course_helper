@@ -1,13 +1,21 @@
 package me.xiaoyuu.course_helper.service.impl;
 
 import me.xiaoyuu.course_helper.dao.GradeMapper;
+import me.xiaoyuu.course_helper.dto.GradeAndCourseDTO;
+import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Grade;
+import me.xiaoyuu.course_helper.model.Student;
+import me.xiaoyuu.course_helper.service.CourseService;
 import me.xiaoyuu.course_helper.service.GradeService;
 import me.xiaoyuu.course_helper.core.service.AbstractService;
+import me.xiaoyuu.course_helper.service.StudentService;
+import me.xiaoyuu.course_helper.util.ProcessUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.xml.soap.SOAPException;
+import java.util.List;
 
 
 /**
@@ -18,9 +26,32 @@ import javax.annotation.Resource;
 public class GradeServiceImpl extends AbstractService<Grade> implements GradeService {
     @Resource
     private GradeMapper gradeMapper;
+    @Resource
+    private StudentService studentService;
+    @Resource
+    private CourseService courseService;
+    @Resource
+    private GradeService gradeService;
+
+    @Override
+    public List<TeacherInfoDTO> selectTeacherByCourseCode(String courseCode) {
+        return gradeMapper.selectTeacherInfoByCourseCode(courseCode);
+    }
 
     @Override
     public int saveWithIgnore(Grade grade) {
         return gradeMapper.insertWithIgnore(grade);
+    }
+
+    public void saveGradeAndCourseByGrade(String grade) throws SOAPException {
+        List<Student> studentList = studentService.findByGrade(grade);
+        for (Student student : studentList) {
+            List<GradeAndCourseDTO> gradeAndCourseDTOList = ProcessUtil.processGradeAndChosenCourse(student.getStudentId());
+            for (GradeAndCourseDTO gradeAndCourseDTO : gradeAndCourseDTOList) {
+                courseService.saveWithIgnore(gradeAndCourseDTO.getCourse());
+                gradeService.saveWithIgnore(gradeAndCourseDTO.getGrade());
+            }
+
+        }
     }
 }

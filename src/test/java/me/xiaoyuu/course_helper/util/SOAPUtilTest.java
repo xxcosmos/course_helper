@@ -2,6 +2,7 @@ package me.xiaoyuu.course_helper.util;
 
 import me.xiaoyuu.course_helper.CourseHelperApplicationTests;
 import me.xiaoyuu.course_helper.dto.GradeAndCourseDTO;
+import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
 import me.xiaoyuu.course_helper.model.Student;
 import me.xiaoyuu.course_helper.service.CourseService;
@@ -30,7 +31,7 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Test
     public void test2() {
-        List<Student> studentList = studentService.findByGrade("2017");
+        List<Student> studentList = studentService.findByGrade("2016");
         for (Student student : studentList) {
             String studentId = student.getStudentId();
             try {
@@ -42,6 +43,15 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
             } catch (SOAPException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Test
+    public void test3() {
+
+        List<Course> courseList = courseService.findCourseListByKeyword("1");
+        for (Course course : courseList) {
+            System.out.println(course.getCourseName() + course.getCourseCredit());
         }
     }
 

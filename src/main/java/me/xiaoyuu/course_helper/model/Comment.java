@@ -62,6 +62,17 @@ public class Comment {
     @Column(name = "update_time")
     private Date updateTime;
 
+    @Column(name = "child_comment_num")
+    private Integer childCommentNum;
+
+    public Integer getChildCommentNum() {
+        return childCommentNum;
+    }
+
+    public void setChildCommentNum(Integer childCommentNum) {
+        this.childCommentNum = childCommentNum;
+    }
+
     /**
      * 获取评论主键id
      *

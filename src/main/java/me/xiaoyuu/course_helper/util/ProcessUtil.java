@@ -24,6 +24,9 @@ public class ProcessUtil {
             if (chosenCourseDTO == null) {
                 continue;
             }
+            //删除已获得课程
+            allChosenCourseDTOList.remove(chosenCourseDTO);
+
             Course course = dtoToCourse(gradeInfoDTO, chosenCourseDTO);
             Grade grade = dtoToGrade(gradeInfoDTO, chosenCourseDTO);
             gradeAndCourseDTOList.add(new GradeAndCourseDTO(grade, course));

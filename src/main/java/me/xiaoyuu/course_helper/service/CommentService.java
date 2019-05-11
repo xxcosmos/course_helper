@@ -13,4 +13,6 @@ public interface CommentService extends Service<Comment> {
     List<Comment> findByPid(int pid);
 
     List<Comment> findByOwnerIdAndType(int ownerId, int type);
+
+    void deleteCascadeById(int id);
 }

@@ -1,12 +1,20 @@
 package me.xiaoyuu.course_helper.controller;
 
+import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
+import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
 import me.xiaoyuu.course_helper.service.CourseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import me.xiaoyuu.course_helper.service.GradeService;
+import me.xiaoyuu.course_helper.vo.CourseVO;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,33 +25,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/course")
 public class CourseController {
+    private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
+
     @Resource
     private CourseService courseService;
+    @Resource
+    private GradeService gradeService;
 
-    @PostMapping
-    public Result add(@RequestBody Course course) {
-        courseService.save(course);
-        return ResultGenerator.genSuccessResult();
+
+    @IgnoreAuth
+    @GetMapping("/{courseCode}")
+    public Result detail(@PathVariable String courseCode) {
+        if (StringUtils.isBlank(courseCode)) {
+            return ResultGenerator.genFailResult("缺少参数");
+        }
+
+        Course course = courseService.findBy("courseCode", courseCode);
+        List<TeacherInfoDTO> teacherList = gradeService.selectTeacherByCourseCode(courseCode);
+        return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList));
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        courseService.deleteById(id);
-        return ResultGenerator.genSuccessResult();
+    @IgnoreAuth
+    @GetMapping("/search")
+    public Result search(@RequestParam String keyword) {
+        logger.info(keyword);
+        if (StringUtils.isBlank(keyword)) {
+            return ResultGenerator.genFailResult("缺少参数");
+        }
+        List<Course> courseList = courseService.findCourseListByKeyword(keyword);
+        return ResultGenerator.genSuccessResult(courseList);
     }
-
-    @PutMapping
-    public Result update(@RequestBody Course course) {
-        courseService.update(course);
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Integer id) {
-        Course course = courseService.findById(id);
-        return ResultGenerator.genSuccessResult(course);
-    }
-
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);

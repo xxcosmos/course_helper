@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -22,5 +23,10 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
     @Override
     public int saveWithIgnore(Course course) {
         return courseMapper.insertWithIgnore(course);
+    }
+
+    @Override
+    public List<Course> findCourseListByKeyword(String keyword) {
+        return courseMapper.selectListByKeyword(keyword);
     }
 }
