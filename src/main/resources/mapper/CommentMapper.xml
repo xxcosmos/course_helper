@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.xiaoyuu.course_helper.dao.CommentMapper">
+    <resultMap id="BaseResultMap" type="me.xiaoyuu.course_helper.model.Comment">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="owner_id" jdbcType="INTEGER" property="ownerId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="from_id" jdbcType="INTEGER" property="fromId"/>
+        <result column="to_id" jdbcType="INTEGER" property="toId"/>
+        <result column="like_num" jdbcType="INTEGER" property="likeNum"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectByPid" resultMap="BaseResultMap">
+        select id,
+               pid,
+               owner_id,
+               type,
+               from_id,
+               to_id,
+               like_num,
+               content,
+               create_time,
+               update_time
+        from comment
+        where pid = #{pid}
+        order by create_time
+    </select>
+
+    <select id="selectByOwnerIdAndType" resultMap="BaseResultMap">
+        select id,
+               pid,
+               owner_id,
+               type,
+               from_id,
+               to_id,
+               like_num,
+               content,
+               create_time,
+               update_time
+        from comment
+        where owner_id = #{ownerId}
+          and type = #{type}
+    </select>
+</mapper>

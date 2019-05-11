@@ -1,8 +1,8 @@
 package me.xiaoyuu.course_helper.service.impl;
 
-import me.xiaoyuu.course_helper.dao.UserMapper;
-import me.xiaoyuu.course_helper.model.User;
-import me.xiaoyuu.course_helper.service.UserService;
+import me.xiaoyuu.course_helper.dao.GradeMapper;
+import me.xiaoyuu.course_helper.model.Grade;
+import me.xiaoyuu.course_helper.service.GradeService;
 import me.xiaoyuu.course_helper.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +15,8 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends AbstractService<User> implements UserService {
+public class GradeServiceImpl extends AbstractService<Grade> implements GradeService {
     @Resource
-    private UserMapper userInfoMapper;
+    private GradeMapper gradeMapper;
 
 }

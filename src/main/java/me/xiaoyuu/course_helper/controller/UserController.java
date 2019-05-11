@@ -8,6 +8,8 @@ import me.xiaoyuu.course_helper.dto.WeixinAuthDTO;
 import me.xiaoyuu.course_helper.dto.WeixinUserInfoDTO;
 import me.xiaoyuu.course_helper.model.User;
 import me.xiaoyuu.course_helper.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.WeixinService;
 import me.xiaoyuu.course_helper.vo.UserVO;
 import org.slf4j.Logger;
@@ -16,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
- * Created by xiaoyuu on 2019/05/07.
+ * Created by xiaoyuu on 2019/05/11.
  */
 @RestController
 @RequestMapping("/user")
@@ -64,5 +67,4 @@ public class UserController {
         UserVO userVO = new UserVO(user);
         return ResultGenerator.genSuccessResult(userVO);
     }
-
 }

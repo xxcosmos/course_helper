@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.vo;
 
+
 import me.xiaoyuu.course_helper.model.User;
 
 public class UserVO {
@@ -7,14 +8,14 @@ public class UserVO {
     private String nickname;
     private String avatar_url;
     private int gender;
-    private int status;
+    private int state;
 
     public UserVO(User user) {
         this.id = user.getId();
         this.nickname = user.getNickname();
         this.avatar_url = user.getAvatarUrl();
         this.gender = user.getGender();
-        this.status = user.getStatus();
+        this.state = user.getState();
     }
 
     public int getId() {
@@ -49,11 +50,11 @@ public class UserVO {
         this.gender = gender;
     }
 
-    public int getStatus() {
-        return status;
+    public int getState() {
+        return state;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setState(int state) {
+        this.state = state;
     }
 }

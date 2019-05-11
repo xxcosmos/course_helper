@@ -74,13 +74,19 @@ public class SoapUtil {
         SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_STUDENT_GRADE);
         SOAPMessage response = getSOAPResponse(request);
         String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
-        if (json.contains("服务器错误")) {
-            logger.error(json + " " + studentId);
-            return null;
+        if (checkSoapData(json, studentId)) {
+            return JSONArray.parseArray(json, GradeInfoDTO.class);
         }
-        return JSONArray.parseArray(json, GradeInfoDTO.class);
+        return new ArrayList<>();
     }
 
+    private static boolean checkSoapData(String json, String studentId) {
+        if (json.contains("服务器错误") || json.contains("没有")) {
+            logger.error(json + " " + studentId);
+            return false;
+        }
+        return true;
+    }
     //在2019的上半年 你可以查到2019-2020-1 之前
     //在2019的下半年 你可以查到2019-2020-2 之前
     public static List<ChosenCourseDTO> getAllChosenCourseDTOList(String studentId) throws SOAPException {
@@ -103,29 +109,23 @@ public class SoapUtil {
         return chosenCourseDTOList;
     }
 
-    public static void main(String[] args) {
-        try {
-            List<GradeInfoDTO> list = getStudentGradeDTOList("*");
-            //  List<ChosenCourseDTO>chosenCourseDTOList = getAllChosenCourseDTOList("*");
-            System.out.println(list);
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public static List<ChosenCourseDTO> getChosenCourseDTOListWithSemester(String studentId, String semester) throws SOAPException {
+        //添加参数
         List<String> params = new ArrayList<>();
         params.add(studentId);
         params.add(semester);
         params.add(TIME_STAMP);
         params.add(HASH);
+        //构建请求
         SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_CHOSEN_COURSE);
         SOAPMessage response = getSOAPResponse(request);
         String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
-        if (json.equals("没有数据")) {
-            return null;
+        if (checkSoapData(json, studentId)) {
+            return JSONArray.parseArray(json, ChosenCourseDTO.class);
         }
-        return JSONArray.parseArray(json, ChosenCourseDTO.class);
+        return new ArrayList<>();
 
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.xiaoyuu.course_helper.dao.CourseMapper">
+    <resultMap id="BaseResultMap" type="me.xiaoyuu.course_helper.model.Course">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="course_code" jdbcType="VARCHAR" property="courseCode"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="course_credit" jdbcType="VARCHAR" property="courseCredit"/>
+        <result column="course_hour" jdbcType="INTEGER" property="courseHour"/>
+        <result column="course_type" jdbcType="INTEGER" property="courseType"/>
+        <result column="course_type_name" jdbcType="VARCHAR" property="courseTypeName"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+    </resultMap>
+</mapper>

@@ -1,11 +1,9 @@
 package me.xiaoyuu.course_helper.model;
 
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
-
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "course_helper_user")
+@Table(name = "user_info")
 public class User {
     /**
      * 用户id
@@ -19,21 +17,8 @@ public class User {
      */
     private String openid;
 
+    @Column(name = "session_key")
     private String sessionKey;
-
-    public User(WxMaUserInfo userInfo, String sessionKey) {
-        this.openid = userInfo.getOpenId();
-        this.avatarUrl = userInfo.getAvatarUrl();
-        this.city = userInfo.getCity();
-        this.province = userInfo.getProvince();
-        this.gender = Integer.valueOf(userInfo.getGender());
-        this.nickname = userInfo.getNickName();
-        this.sessionKey = sessionKey;
-    }
-
-    public String getSessionKey() {
-        return sessionKey;
-    }
 
     /**
      * 用户昵称
@@ -61,16 +46,13 @@ public class User {
      */
     private String province;
 
-    /**
-     * 手机号
-     */
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "student_id")
+    private String studentId;
 
     /**
      * 0正常，1，已认证，-1 删除
      */
-    private Integer status;
+    private Integer state;
 
     /**
      * 创建时间
@@ -83,13 +65,6 @@ public class User {
      */
     @Column(name = "update_time")
     private Date updateTime;
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-    }
-
-    public User() {
-    }
 
     /**
      * 获取用户id
@@ -125,6 +100,20 @@ public class User {
      */
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    /**
+     * @return session_key
+     */
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    /**
+     * @param sessionKey
+     */
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     /**
@@ -218,39 +207,35 @@ public class User {
     }
 
     /**
-     * 获取手机号
-     *
-     * @return phone_number - 手机号
+     * @return student_id
      */
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getStudentId() {
+        return studentId;
     }
 
     /**
-     * 设置手机号
-     *
-     * @param phoneNumber 手机号
+     * @param studentId
      */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     /**
      * 获取0正常，1，已认证，-1 删除
      *
-     * @return status - 0正常，1，已认证，-1 删除
+     * @return state - 0正常，1，已认证，-1 删除
      */
-    public Integer getStatus() {
-        return status;
+    public Integer getState() {
+        return state;
     }
 
     /**
      * 设置0正常，1，已认证，-1 删除
      *
-     * @param status 0正常，1，已认证，-1 删除
+     * @param state 0正常，1，已认证，-1 删除
      */
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     /**
