@@ -45,7 +45,6 @@ public class CourseController {
         return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList));
     }
 
-    @IgnoreAuth
     @GetMapping("/search")
     public Result search(@RequestParam String keyword) {
         logger.info(keyword);

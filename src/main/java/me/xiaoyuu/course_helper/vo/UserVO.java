@@ -8,6 +8,7 @@ public class UserVO {
     private String nickname;
     private String avatar_url;
     private int gender;
+    private String studentId;
     private int state;
 
     public UserVO(User user) {
@@ -15,7 +16,16 @@ public class UserVO {
         this.nickname = user.getNickname();
         this.avatar_url = user.getAvatarUrl();
         this.gender = user.getGender();
+        this.studentId = user.getStudentId();
         this.state = user.getState();
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public int getId() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -18,5 +19,13 @@ import javax.annotation.Resource;
 public class LikeInfoServiceImpl extends AbstractService<LikeInfo> implements LikeInfoService {
     @Resource
     private LikeInfoMapper likeInfoMapper;
+
+    public int getLikedCount(int id) {
+        return likeInfoMapper.getLikedCount(id);
+    }
+
+    public List<LikeInfo> findByUserIdAndOwnerId(int userId, int ownerId) {
+        return likeInfoMapper.selectByUserIdAndOwnerId(ownerId, userId);
+    }
 
 }

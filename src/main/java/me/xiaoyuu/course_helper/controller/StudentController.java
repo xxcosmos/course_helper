@@ -26,12 +26,6 @@ public class StudentController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        studentService.deleteById(id);
-        return ResultGenerator.genSuccessResult();
-    }
-
     @PutMapping
     public Result update(@RequestBody Student student) {
         studentService.update(student);
@@ -44,11 +38,5 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(student);
     }
 
-    @GetMapping
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<Student> list = studentService.findAll();
-        PageInfo pageInfo = new PageInfo<>(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
-    }
+
 }

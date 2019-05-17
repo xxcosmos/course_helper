@@ -37,9 +37,9 @@ public class UserController {
 
     @IgnoreAuth
     @PostMapping("/login")
-    public Result login(String jscode, WeixinUserInfoDTO weixinUserInfoDTO) {
-        logger.info(jscode);
-        WeixinAuthDTO weixinAuthDTO = weixinService.getWeixinAuthDTO(jscode);
+    public Result login(String code, WeixinUserInfoDTO weixinUserInfoDTO) {
+        logger.info(code);
+        WeixinAuthDTO weixinAuthDTO = weixinService.getWeixinAuthDTO(code);
         if (weixinAuthDTO == null || weixinAuthDTO.getErrcode() != 0) {
             return ResultGenerator.genFailResult("验证code错误");
         }
@@ -61,9 +61,13 @@ public class UserController {
 
     }
 
-    @GetMapping("/{id}")
-    public Result getUserInfo(@PathVariable int id) {
-        User user = userService.findById(id);
+    @GetMapping("/")
+    public Result getUserInfo(@RequestHeader String authorization) {
+        String openid = jwtConfig.getOpenIdByToken(authorization);
+        if (openid == null) {
+            return ResultGenerator.genFailResult("错误");
+        }
+        User user = userService.findBy("openid", openid);
         UserVO userVO = new UserVO(user);
         return ResultGenerator.genSuccessResult(userVO);
     }

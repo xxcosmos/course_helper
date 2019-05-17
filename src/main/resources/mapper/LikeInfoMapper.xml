@@ -10,4 +10,18 @@
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
     </resultMap>
+
+    <select id="getLikedCount">
+        select count(id)
+        from like_info
+        where owner_id = #{id}
+    </select>
+
+    <select id="selectByUserIdAndOwnerId"
+            resultMap="BaseResultMap">
+        select id, owner_id, user_id, type
+        from like_info
+        where owner_id = #{ownerId}
+          and user_id = #{userId}
+    </select>
 </mapper>

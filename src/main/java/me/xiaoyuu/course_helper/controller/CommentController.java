@@ -7,6 +7,7 @@ import me.xiaoyuu.course_helper.model.Comment;
 import me.xiaoyuu.course_helper.service.CommentService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import me.xiaoyuu.course_helper.service.LikeInfoService;
 import me.xiaoyuu.course_helper.vo.CommentVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,8 @@ import java.util.List;
 public class CommentController {
     @Resource
     private CommentService commentService;
-
+    @Resource
+    private LikeInfoService likeInfoService;
     /**
      * 添加评论
      *
@@ -51,9 +53,7 @@ public class CommentController {
      */
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        if (id == null) {
-            return ResultGenerator.genFailResult("缺少参数");
-        }
+
         commentService.deleteCascadeById(id);
         return ResultGenerator.genSuccessResult();
     }
@@ -68,6 +68,10 @@ public class CommentController {
     @GetMapping("/course/{id}")
     public Result getCourseComments(@PathVariable Integer id) {
         List<Comment> comments = commentService.findByOwnerIdAndType(id, 1);
+        for (Comment comment : comments) {
+            comment.setChildCommentNum(commentService.findByPid(comment.getId()).size());
+            comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
+        }
         return ResultGenerator.genSuccessResult(comments);
     }
 
@@ -82,8 +86,9 @@ public class CommentController {
         Comment comment = commentService.findById(id);
         if (comment == null)
             return ResultGenerator.genFailResult("请求参数不合法");
-
+        comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
         List<Comment> childComment = commentService.findByPid(comment.getId());
+        comment.setChildCommentNum(childComment.size());
         CommentVO commentVO = new CommentVO(comment, childComment);
 
         return ResultGenerator.genSuccessResult(commentVO);
