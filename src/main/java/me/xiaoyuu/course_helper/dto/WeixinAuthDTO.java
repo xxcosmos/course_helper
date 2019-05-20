@@ -46,4 +46,15 @@ public class WeixinAuthDTO {
     public void setErrcode(int errcode) {
         this.errcode = errcode;
     }
+
+    @Override
+    public String toString() {
+        return "WeixinAuthDTO{" +
+                "openid='" + openid + '\'' +
+                ", sessionKey='" + sessionKey + '\'' +
+                ", unionid='" + unionid + '\'' +
+                ", errmsg='" + errmsg + '\'' +
+                ", errcode=" + errcode +
+                '}';
+    }
 }

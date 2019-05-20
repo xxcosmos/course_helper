@@ -1,6 +1,6 @@
 package me.xiaoyuu.course_helper.dto;
 
-public class WeixinUserInfoDTO {
+public class UserInfo {
     private String country;
     private String province;
     private String city;
@@ -8,6 +8,19 @@ public class WeixinUserInfoDTO {
     private String nickName;
     private String language;
     private int gender;
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "country='" + country + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", language='" + language + '\'' +
+                ", gender=" + gender +
+                '}';
+    }
 
     public String getCountry() {
         return country;

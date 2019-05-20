@@ -1,12 +1,10 @@
 package me.xiaoyuu.course_helper.service.impl;
 
-import me.xiaoyuu.course_helper.core.service.AbstractService;
 import me.xiaoyuu.course_helper.dto.WeixinAuthDTO;
-import me.xiaoyuu.course_helper.dto.WeixinUserInfoDTO;
+import me.xiaoyuu.course_helper.dto.UserInfo;
 import me.xiaoyuu.course_helper.model.User;
 import me.xiaoyuu.course_helper.service.WeixinService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +30,7 @@ public class WeixinServiceImpl implements WeixinService {
         return restTemplate.getForObject(url, WeixinAuthDTO.class, appid, appSecret, code);
     }
 
-    public User getUser(WeixinAuthDTO weixinAuthDTO, WeixinUserInfoDTO weixinUserInfoDTO) {
+    public User getUser(WeixinAuthDTO weixinAuthDTO, UserInfo weixinUserInfoDTO) {
         User user = new User();
         user.setSessionKey(weixinAuthDTO.getSessionKey());
         user.setOpenid(weixinAuthDTO.getOpenid());
