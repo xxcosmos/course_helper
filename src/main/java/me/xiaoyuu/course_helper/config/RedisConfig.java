@@ -25,17 +25,7 @@ import java.net.UnknownHostException;
 @Configuration
 @EnableCaching
 public class RedisConfig {
-    /**
-     * 从application.yml取得redis的host地址.
-     */
-    @Value("${spring.redis.host}")
-    private String redisHost;
 
-    /**
-     * 从application.yml取得redis的端口号.
-     */
-    @Value("${spring.redis.port}")
-    private Integer redisPort;
 
     @Bean
     @ConditionalOnMissingBean(name = "redisTemplate")

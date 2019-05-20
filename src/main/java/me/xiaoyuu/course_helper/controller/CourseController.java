@@ -33,7 +33,6 @@ public class CourseController {
     private GradeService gradeService;
 
 
-    @IgnoreAuth
     @GetMapping("/{courseCode}")
     public Result detail(@PathVariable String courseCode) {
         if (StringUtils.isBlank(courseCode)) {

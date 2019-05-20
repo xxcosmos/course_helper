@@ -33,7 +33,6 @@ public class JwtConfig {
 
     public String generateToken(User user) {
         String jwtId = UUID.randomUUID().toString();
-        logger.info(SECRET_KEY);
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         String token = JWT.create().withClaim("openid", user.getOpenid())
                 .withClaim("jwtId", jwtId)
