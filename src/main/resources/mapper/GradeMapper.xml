@@ -28,4 +28,11 @@
           and grade >= 60
         group by teacher_name
     </select>
+
+    <select id="selectByStudentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select id, student_id, course_code, grade, grade_point, grade_type_name, teacher_name
+        from grade
+        where student_id = #{studentId}
+        order by course_code
+    </select>
 </mapper>

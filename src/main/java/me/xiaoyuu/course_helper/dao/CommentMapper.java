@@ -8,7 +8,10 @@ import javax.validation.constraints.Max;
 import java.util.List;
 
 public interface CommentMapper extends Mapper<Comment> {
-    List<Comment> selectByPid(@Param("pid") int pid);
 
-    List<Comment> selectByOwnerIdAndType(@Param("ownerId") int ownerId, @Param("type") int type);
+    List<Comment> selectByOwnerId(@Param("ownerId") String ownerId);
+
+    List<String> selectHottest(@Param("num") int num);
+
+    int isExisted(@Param("ownerId") String ownerId, @Param("fromId") int fromId);
 }

@@ -39,26 +39,5 @@ public class LikeInfoController {
         return ResultGenerator.genSuccessResult();
     }
 
-    /**
-     * 取消点赞
-     *
-     * @param id 点赞的id
-     * @return
-     */
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        likeInfoService.deleteById(id);
-        return ResultGenerator.genSuccessResult();
-    }
-
-
-    @PostMapping("/get")
-    public Result detail(@RequestBody int ownerId, @RequestHeader String authorization) {
-        String openid = jwtConfig.getOpenIdByToken(authorization);
-        int userId = userService.findBy("openid", openid).getId();
-        List<LikeInfo> likeInfoList = likeInfoService.findByUserIdAndOwnerId(userId, ownerId);
-        return ResultGenerator.genSuccessResult(likeInfoList);
-    }
-
 
 }

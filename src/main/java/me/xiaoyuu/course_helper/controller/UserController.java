@@ -7,10 +7,13 @@ import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dto.WeixinAuthDTO;
 import me.xiaoyuu.course_helper.dto.WeixinLoginDTO;
 import me.xiaoyuu.course_helper.dto.UserInfo;
+import me.xiaoyuu.course_helper.model.Student;
 import me.xiaoyuu.course_helper.model.User;
+import me.xiaoyuu.course_helper.service.StudentService;
 import me.xiaoyuu.course_helper.service.UserService;
 import me.xiaoyuu.course_helper.service.WeixinService;
 import me.xiaoyuu.course_helper.vo.UserVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +30,8 @@ public class UserController {
     private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
     @Resource
     private UserService userService;
-
+    @Resource
+    private StudentService studentService;
     @Resource
     private WeixinService weixinService;
     @Resource
@@ -59,14 +63,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping
     public Result getUserInfo(@RequestHeader String authorization) {
         String openid = jwtConfig.getOpenIdByToken(authorization);
-        if (openid == null) {
-            return ResultGenerator.genFailResult("错误");
-        }
         User user = userService.findBy("openid", openid);
         UserVO userVO = new UserVO(user);
         return ResultGenerator.genSuccessResult(userVO);
+    }
+
+    @PostMapping("/bind")
+    public Result bind(@RequestBody Student student, @RequestHeader String authorization) {
+        logger.info(student.getStudentId());
+        String openid = jwtConfig.getOpenIdByToken(authorization);
+        return userService.bind(openid, student);
     }
 }

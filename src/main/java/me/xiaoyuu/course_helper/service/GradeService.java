@@ -13,6 +13,8 @@ import java.util.List;
 public interface GradeService extends Service<Grade> {
     int saveWithIgnore(Grade grade);
 
-    List<TeacherInfoDTO> selectTeacherByCourseCode(String courseCode);
+    List<Grade> findByStudentId(String studentId);
+
+    List<TeacherInfoDTO> findTeacherInfoByCourseCode(String courseCode);
 
 }

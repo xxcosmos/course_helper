@@ -1,20 +1,18 @@
 package me.xiaoyuu.course_helper.controller;
 
-import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.Comment;
 import me.xiaoyuu.course_helper.service.CommentService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.LikeInfoService;
 import me.xiaoyuu.course_helper.vo.CommentVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import tk.mybatis.mapper.entity.Condition;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
+    private final Logger logger = LoggerFactory.getLogger(CommentController.class);
+
     @Resource
     private CommentService commentService;
     @Resource
     private LikeInfoService likeInfoService;
+
     /**
      * 添加评论
      *
@@ -35,10 +36,11 @@ public class CommentController {
      */
     @PostMapping
     public Result add(Comment comment) {
+        logger.info(comment.getContent());
         if (StringUtils.isBlank(comment.getContent())) {
             return ResultGenerator.genFailResult("评论内容为空");
         }
-        if (comment.getFromId() == null || comment.getPid() == null) {
+        if (comment.getFromId() == null || comment.getOwnerId() == null) {
             return ResultGenerator.genFailResult("请求参数有误");
         }
         commentService.save(comment);
@@ -54,7 +56,7 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
 
-        commentService.deleteCascadeById(id);
+        //Todo 删除评论
         return ResultGenerator.genSuccessResult();
     }
 
@@ -62,35 +64,14 @@ public class CommentController {
     /**
      * 得到课程评论列表
      *
-     * @param id
+     * @param courseCode
      * @return
      */
-    @GetMapping("/course/{id}")
-    public Result getCourseComments(@PathVariable Integer id) {
-        List<Comment> comments = commentService.findByOwnerIdAndType(id, 1);
-        for (Comment comment : comments) {
-            comment.setChildCommentNum(commentService.findByPid(comment.getId()).size());
-            comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
-        }
-        return ResultGenerator.genSuccessResult(comments);
+    @GetMapping("/course/{courseCode}")
+    public Result getCourseComments(@PathVariable String courseCode) {
+        List<CommentVO> commentVOList = commentService.getCommentVOByCourseCode(courseCode);
+        return ResultGenerator.genSuccessResult(commentVOList);
     }
 
-    /**
-     * 得到评论详情
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}")
-    public Result getCommentDetail(@PathVariable Integer id) {
-        Comment comment = commentService.findById(id);
-        if (comment == null)
-            return ResultGenerator.genFailResult("请求参数不合法");
-        comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
-        List<Comment> childComment = commentService.findByPid(comment.getId());
-        comment.setChildCommentNum(childComment.size());
-        CommentVO commentVO = new CommentVO(comment, childComment);
 
-        return ResultGenerator.genSuccessResult(commentVO);
-    }
 }

@@ -6,47 +6,25 @@
           WARNING - @mbg.generated
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="pid" jdbcType="INTEGER" property="pid"/>
-        <result column="owner_id" jdbcType="INTEGER" property="ownerId"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="owner_id" jdbcType="VARCHAR" property="ownerId"/>
         <result column="from_id" jdbcType="INTEGER" property="fromId"/>
-        <result column="to_id" jdbcType="INTEGER" property="toId"/>
         <result column="like_num" jdbcType="INTEGER" property="likeNum"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="child_comment_num" jdbcType="INTEGER" property="childCommentNum"/>
+        <result column="star" jdbcType="INTEGER" property="star"
     </resultMap>
 
-    <select id="selectByPid" resultMap="BaseResultMap">
-        select id,
-               pid,
-               owner_id,
-               type,
-               from_id,
-               to_id,
-               like_num,
-               content,
-               create_time,
-               update_time,
-               child_comment_num
-        from comment
-        where pid = #{pid}
-        order by create_time desc
-    </select>
 
-    <select id="selectByOwnerIdAndType" resultMap="BaseResultMap">
+    <select id="selectByOwnerId" resultMap="BaseResultMap">
         select id,
-               pid,
                owner_id,
-               type,
                from_id,
-               to_id,
                like_num,
                content,
                create_time,
                update_time,
-               child_comment_num
+               star
         from comment
         where owner_id = #{ownerId}
         order by like_num desc
@@ -57,4 +35,18 @@
         set like_num = like_num + 1
         where id = #{id}
     </update>
+
+    <select id="isExisted" resultType="java.lang.Integer">
+        select count(id)
+        from comment
+        where owner_id = #{ownerId}
+          and from_id = #{fromId}
+    </select>
+    <select id="selectHottest" resultType="java.lang.String">
+        select distinct (owner_id) as ownerid
+        from comment
+        group by owner_id
+        order by count(ownerid) desc
+        limit #{num}
+    </select>
 </mapper>

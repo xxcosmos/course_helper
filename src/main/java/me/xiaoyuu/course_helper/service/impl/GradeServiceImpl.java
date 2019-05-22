@@ -34,10 +34,13 @@ public class GradeServiceImpl extends AbstractService<Grade> implements GradeSer
     private GradeService gradeService;
 
     @Override
-    public List<TeacherInfoDTO> selectTeacherByCourseCode(String courseCode) {
+    public List<TeacherInfoDTO> findTeacherInfoByCourseCode(String courseCode) {
         return gradeMapper.selectTeacherInfoByCourseCode(courseCode);
     }
 
+    public List<Grade> findByStudentId(String studentId) {
+        return gradeMapper.selectByStudentId(studentId);
+    }
     @Override
     public int saveWithIgnore(Grade grade) {
         return gradeMapper.insertWithIgnore(grade);

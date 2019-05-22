@@ -23,6 +23,15 @@ import static me.xiaoyuu.course_helper.constant.SoapConstant.*;
 public class SoapUtil {
     private static final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
 
+    public static void main(String[] args) {
+        try {
+            List<GradeInfoDTO> studentGradeDTOList = getStudentGradeDTOList("201501109001");
+            List<ChosenCourseDTO> allChosenCourseDTOList = getAllChosenCourseDTOList("201501109001");
+            System.out.println(allChosenCourseDTOList);
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 得到SOAP请求对象
      *

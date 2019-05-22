@@ -1,19 +1,20 @@
 package me.xiaoyuu.course_helper.vo;
 
 import me.xiaoyuu.course_helper.model.Comment;
-
-import java.util.List;
+import me.xiaoyuu.course_helper.model.LikeInfo;
+import me.xiaoyuu.course_helper.model.User;
 
 public class CommentVO {
     private Comment comment;
-    private List<Comment> childComment;
+    private UserVO userVO;
+    private boolean isLike;
 
-    public CommentVO(Comment comment, List<Comment> childComment) {
-        this.comment = comment;
-        this.childComment = childComment;
+    public boolean isLike() {
+        return isLike;
     }
 
-    public CommentVO() {
+    public void setLike(boolean like) {
+        isLike = like;
     }
 
     public Comment getComment() {
@@ -24,11 +25,12 @@ public class CommentVO {
         this.comment = comment;
     }
 
-    public List<Comment> getChildComment() {
-        return childComment;
+
+    public UserVO getUserVO() {
+        return userVO;
     }
 
-    public void setChildComment(List<Comment> childComment) {
-        this.childComment = childComment;
+    public void setUserVO(UserVO userVO) {
+        this.userVO = userVO;
     }
 }

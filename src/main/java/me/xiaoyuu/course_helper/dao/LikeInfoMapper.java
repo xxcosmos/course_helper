@@ -9,5 +9,5 @@ import java.util.List;
 public interface LikeInfoMapper extends Mapper<LikeInfo> {
     int getLikedCount(@Param("id") int id);
 
-    List<LikeInfo> selectByUserIdAndOwnerId(@Param("ownerId") int ownerId, @Param("userId") int userId);
+    LikeInfo selectByUserIdAndOwnerId(@Param("ownerId") int ownerId, @Param("userId") int userId);
 }

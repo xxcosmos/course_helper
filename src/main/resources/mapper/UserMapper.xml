@@ -9,7 +9,7 @@
     <result column="openid" jdbcType="VARCHAR" property="openid"/>
     <result column="session_key" jdbcType="VARCHAR" property="sessionKey"/>
     <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
-    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+      <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl"/>
     <result column="gender" jdbcType="INTEGER" property="gender"/>
     <result column="city" jdbcType="VARCHAR" property="city"/>
     <result column="province" jdbcType="VARCHAR" property="province"/>

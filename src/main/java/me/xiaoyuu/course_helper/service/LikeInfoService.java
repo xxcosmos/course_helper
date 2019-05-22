@@ -12,5 +12,5 @@ import java.util.List;
 public interface LikeInfoService extends Service<LikeInfo> {
     int getLikedCount(int id);
 
-    List<LikeInfo> findByUserIdAndOwnerId(int userId, int ownerId);
+    LikeInfo findByUserIdAndOwnerId(int userId, int ownerId);
 }

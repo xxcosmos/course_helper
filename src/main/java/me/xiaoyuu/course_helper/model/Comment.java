@@ -11,21 +11,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    /**
-     * 父评论id
-     */
-    private Integer pid;
+
 
     /**
      * 被评论的资源id，可以是人、项目、资源
      */
     @Column(name = "owner_id")
-    private Integer ownerId;
+    private String ownerId;
 
-    /**
-     * 评论类型：对人评论，对商品评论，对说说评论
-     */
-    private Integer type;
 
     /**
      * 评论者id
@@ -33,11 +26,7 @@ public class Comment {
     @Column(name = "from_id")
     private Integer fromId;
 
-    /**
-     * 被评论者id
-     */
-    @Column(name = "to_id")
-    private Integer toId;
+
 
     /**
      * 点赞的数量
@@ -61,16 +50,14 @@ public class Comment {
      */
     @Column(name = "update_time")
     private Date updateTime;
+    private int star;
 
-    @Column(name = "child_comment_num")
-    private Integer childCommentNum;
-
-    public Integer getChildCommentNum() {
-        return childCommentNum;
+    public int getStar() {
+        return star;
     }
 
-    public void setChildCommentNum(Integer childCommentNum) {
-        this.childCommentNum = childCommentNum;
+    public void setStar(int star) {
+        this.star = star;
     }
 
     /**
@@ -83,38 +70,11 @@ public class Comment {
     }
 
     /**
-     * 设置评论主键id
-     *
-     * @param id 评论主键id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * 获取父评论id
-     *
-     * @return pid - 父评论id
-     */
-    public Integer getPid() {
-        return pid;
-    }
-
-    /**
-     * 设置父评论id
-     *
-     * @param pid 父评论id
-     */
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    /**
      * 获取被评论的资源id，可以是人、项目、资源
      *
      * @return owner_id - 被评论的资源id，可以是人、项目、资源
      */
-    public Integer getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
@@ -123,27 +83,11 @@ public class Comment {
      *
      * @param ownerId 被评论的资源id，可以是人、项目、资源
      */
-    public void setOwnerId(Integer ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 
-    /**
-     * 获取评论类型：对人评论，对商品评论，对说说评论
-     *
-     * @return type - 评论类型：对人评论，对商品评论，对说说评论
-     */
-    public Integer getType() {
-        return type;
-    }
 
-    /**
-     * 设置评论类型：对人评论，对商品评论，对说说评论
-     *
-     * @param type 评论类型：对人评论，对商品评论，对说说评论
-     */
-    public void setType(Integer type) {
-        this.type = type;
-    }
 
     /**
      * 获取评论者id
@@ -163,23 +107,7 @@ public class Comment {
         this.fromId = fromId;
     }
 
-    /**
-     * 获取被评论者id
-     *
-     * @return to_id - 被评论者id
-     */
-    public Integer getToId() {
-        return toId;
-    }
 
-    /**
-     * 设置被评论者id
-     *
-     * @param toId 被评论者id
-     */
-    public void setToId(Integer toId) {
-        this.toId = toId;
-    }
 
     /**
      * 获取点赞的数量
@@ -226,14 +154,6 @@ public class Comment {
         return createTime;
     }
 
-    /**
-     * 设置创建时间
-     *
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
     /**
      * 获取修改时间

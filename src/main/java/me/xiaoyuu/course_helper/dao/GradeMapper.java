@@ -12,4 +12,6 @@ public interface GradeMapper extends Mapper<Grade> {
     int insertWithIgnore(@Param("grade") Grade grade);
 
     List<TeacherInfoDTO> selectTeacherInfoByCourseCode(@Param("courseCode") String courseCode);
+
+    List<Grade> selectByStudentId(@Param("studentId") String studentId);
 }

@@ -2,12 +2,19 @@ package me.xiaoyuu.course_helper.service.impl;
 
 import me.xiaoyuu.course_helper.dao.CommentMapper;
 import me.xiaoyuu.course_helper.model.Comment;
+import me.xiaoyuu.course_helper.model.LikeInfo;
+import me.xiaoyuu.course_helper.model.User;
 import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.core.service.AbstractService;
+import me.xiaoyuu.course_helper.service.LikeInfoService;
+import me.xiaoyuu.course_helper.service.UserService;
+import me.xiaoyuu.course_helper.vo.CommentVO;
+import me.xiaoyuu.course_helper.vo.UserVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,22 +26,40 @@ import java.util.List;
 public class CommentServiceImpl extends AbstractService<Comment> implements CommentService {
     @Resource
     private CommentMapper commentMapper;
+    @Resource
+    private LikeInfoService likeInfoService;
+    @Resource
+    private UserService userService;
 
-    public List<Comment> findByPid(int pid) {
-        return commentMapper.selectByPid(pid);
+
+    @Override
+    public boolean isCommented(String ownerId, int fromId) {
+        return commentMapper.isExisted(ownerId, fromId) > 0;
     }
 
-    public List<Comment> findByOwnerIdAndType(int ownerId, int type) {
-        return commentMapper.selectByOwnerIdAndType(ownerId, type);
+    public List<Comment> findByOwnerId(String ownerId) {
+        return commentMapper.selectByOwnerId(ownerId);
     }
 
-    public void deleteCascadeById(int id) {
-        List<Comment> commentList = findByPid(id);
+    public List<CommentVO> getCommentVOByCourseCode(String courseCode) {
+        List<Comment> commentList = findByOwnerId(courseCode);
+        List<CommentVO> commentVOList = new ArrayList<>();
         for (Comment comment : commentList) {
-            deleteById(comment.getId());
-        }
-        deleteById(id);
+            Integer userId = comment.getFromId();
+            comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
 
+            CommentVO commentVO = new CommentVO();
+            commentVO.setComment(comment);
+            commentVO.setUserVO(new UserVO(userService.findBy("id", userId)));
+            commentVO.setLike(likeInfoService.findByUserIdAndOwnerId(userId, comment.getId()) != null);
+            commentVOList.add(commentVO);
+        }
+        return commentVOList;
     }
+
+    public List<String> findHottest(int num) {
+        return commentMapper.selectHottest(num);
+    }
+
 
 }

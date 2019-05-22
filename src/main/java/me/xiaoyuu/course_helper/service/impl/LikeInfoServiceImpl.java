@@ -24,7 +24,7 @@ public class LikeInfoServiceImpl extends AbstractService<LikeInfo> implements Li
         return likeInfoMapper.getLikedCount(id);
     }
 
-    public List<LikeInfo> findByUserIdAndOwnerId(int userId, int ownerId) {
+    public LikeInfo findByUserIdAndOwnerId(int userId, int ownerId) {
         return likeInfoMapper.selectByUserIdAndOwnerId(ownerId, userId);
     }
 

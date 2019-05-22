@@ -1,14 +1,16 @@
 package me.xiaoyuu.course_helper.controller;
 
-import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
+import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
+import me.xiaoyuu.course_helper.model.Grade;
 import me.xiaoyuu.course_helper.service.CourseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.GradeService;
+import me.xiaoyuu.course_helper.service.UserService;
 import me.xiaoyuu.course_helper.vo.CourseVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,7 +33,10 @@ public class CourseController {
     private CourseService courseService;
     @Resource
     private GradeService gradeService;
-
+    @Resource
+    JwtConfig jwtConfig;
+    @Resource
+    private UserService userService;
 
     @GetMapping("/{courseCode}")
     public Result detail(@PathVariable String courseCode) {
@@ -40,8 +45,22 @@ public class CourseController {
         }
 
         Course course = courseService.findBy("courseCode", courseCode);
-        List<TeacherInfoDTO> teacherList = gradeService.selectTeacherByCourseCode(courseCode);
+        List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
         return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList));
+    }
+
+    @GetMapping("/hot")
+    public Result hottestCourse() {
+        List<Course> hottestCourse = courseService.findHottestCourse(50);
+        return ResultGenerator.genSuccessResult(hottestCourse);
+    }
+
+    @GetMapping("/recommend")
+    public Result recommendCourse(@RequestHeader String authorization) {
+        String openid = jwtConfig.getOpenIdByToken(authorization);
+        List<Course> courseList = courseService.getRecommendCourse(openid);
+        return ResultGenerator.genSuccessResult(courseList);
+
     }
 
     @GetMapping("/search")
@@ -53,6 +72,7 @@ public class CourseController {
         List<Course> courseList = courseService.findCourseListByKeyword(keyword);
         return ResultGenerator.genSuccessResult(courseList);
     }
+
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);

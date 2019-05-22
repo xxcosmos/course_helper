@@ -13,5 +13,8 @@ public interface CourseService extends Service<Course> {
 
     int saveWithIgnore(Course course);
 
+    List<Course> findHottestCourse(int num);
+
+    List<Course> getRecommendCourse(String openid);
     List<Course> findCourseListByKeyword(String keyword);
 }

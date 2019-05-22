@@ -31,9 +31,10 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Test
     public void test2() {
-        List<Student> studentList = studentService.findByGrade("2016");
+        List<Student> studentList = studentService.findByGrade("2015");
         for (Student student : studentList) {
             String studentId = student.getStudentId();
+            logger.info(studentId);
             try {
                 List<GradeAndCourseDTO> gradeAndCourseDTOList = ProcessUtil.processGradeAndChosenCourse(studentId);
                 for (GradeAndCourseDTO gradeAndCourseDTO : gradeAndCourseDTOList) {

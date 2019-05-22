@@ -171,4 +171,17 @@ public class Course {
     public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseCode='" + courseCode + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseCredit='" + courseCredit + '\'' +
+                ", courseHour=" + courseHour +
+                ", courseType=" + courseType +
+                ", courseTypeName='" + courseTypeName + '\'' +
+                ", unitName='" + unitName + '\'' +
+                '}';
+    }
 }

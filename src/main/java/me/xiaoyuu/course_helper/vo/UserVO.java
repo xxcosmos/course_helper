@@ -6,7 +6,7 @@ import me.xiaoyuu.course_helper.model.User;
 public class UserVO {
     private int id;
     private String nickname;
-    private String avatar_url;
+    private String avatarUrl;
     private int gender;
     private String studentId;
     private int state;
@@ -14,7 +14,7 @@ public class UserVO {
     public UserVO(User user) {
         this.id = user.getId();
         this.nickname = user.getNickname();
-        this.avatar_url = user.getAvatarUrl();
+        this.avatarUrl = user.getAvatarUrl();
         this.gender = user.getGender();
         this.studentId = user.getStudentId();
         this.state = user.getState();
@@ -44,12 +44,12 @@ public class UserVO {
         this.nickname = nickname;
     }
 
-    public String getAvatar_url() {
-        return avatar_url;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public int getGender() {
