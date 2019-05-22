@@ -98,6 +98,20 @@ public class Comment {
         return fromId;
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", ownerId='" + ownerId + '\'' +
+                ", fromId=" + fromId +
+                ", likeNum=" + likeNum +
+                ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", star=" + star +
+                '}';
+    }
+
     /**
      * 设置评论者id
      *

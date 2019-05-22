@@ -35,8 +35,8 @@ public class CommentController {
      * @return
      */
     @PostMapping
-    public Result add(Comment comment) {
-        logger.info(comment.getContent());
+    public Result add(@RequestBody Comment comment) {
+        logger.info(comment.toString());
         if (StringUtils.isBlank(comment.getContent())) {
             return ResultGenerator.genFailResult("评论内容为空");
         }
