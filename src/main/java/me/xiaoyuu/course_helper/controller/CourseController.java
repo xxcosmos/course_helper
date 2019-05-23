@@ -6,11 +6,13 @@ import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
 import me.xiaoyuu.course_helper.model.Grade;
+import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.service.CourseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.GradeService;
 import me.xiaoyuu.course_helper.service.UserService;
+import me.xiaoyuu.course_helper.vo.CommentVO;
 import me.xiaoyuu.course_helper.vo.CourseVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,27 +36,44 @@ public class CourseController {
     @Resource
     private GradeService gradeService;
     @Resource
+    private CommentService commentService;
+    @Resource
     JwtConfig jwtConfig;
     @Resource
     private UserService userService;
 
+    /**
+     * 课程详情
+     *
+     * @param courseCode
+     * @return
+     */
     @GetMapping("/{courseCode}")
     public Result detail(@PathVariable String courseCode) {
         if (StringUtils.isBlank(courseCode)) {
             return ResultGenerator.genFailResult("缺少参数");
         }
-
+        List<CommentVO> commentVOList = commentService.getCommentVOByCourseCode(courseCode);
         Course course = courseService.findBy("courseCode", courseCode);
         List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
-        return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList));
+        return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList, commentVOList));
     }
 
+    /**
+     * 热门课程
+     * @return
+     */
     @GetMapping("/hot")
     public Result hottestCourse() {
         List<Course> hottestCourse = courseService.findHottestCourse(50);
         return ResultGenerator.genSuccessResult(hottestCourse);
     }
 
+    /**
+     * 推荐课程
+     * @param authorization
+     * @return
+     */
     @GetMapping("/recommend")
     public Result recommendCourse(@RequestHeader String authorization) {
         String openid = jwtConfig.getOpenIdByToken(authorization);
@@ -63,6 +82,11 @@ public class CourseController {
 
     }
 
+    /**
+     * 对课程名模糊查询
+     * @param keyword
+     * @return
+     */
     @GetMapping("/search")
     public Result search(@RequestParam String keyword) {
         logger.info(keyword);
@@ -73,6 +97,12 @@ public class CourseController {
         return ResultGenerator.genSuccessResult(courseList);
     }
 
+    /**
+     * 得到全部课程
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);

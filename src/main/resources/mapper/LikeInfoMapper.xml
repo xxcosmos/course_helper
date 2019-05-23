@@ -11,7 +11,7 @@
         <result column="type" jdbcType="INTEGER" property="type"/>
     </resultMap>
 
-    <select id="getLikedCount">
+    <select id="getLikedCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(id)
         from like_info
         where owner_id = #{id}
