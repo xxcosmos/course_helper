@@ -8,7 +8,11 @@ import me.xiaoyuu.course_helper.service.LikeInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.UserService;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +23,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/like")
 public class LikeInfoController {
+
+    private final Logger logger = LoggerFactory.getLogger(LikeInfoController.class);
+
     @Resource
     private LikeInfoService likeInfoService;
     @Resource
@@ -28,14 +35,23 @@ public class LikeInfoController {
 
     @PostMapping
     public Result add(@RequestBody LikeInfo likeInfo, @RequestHeader String authorization) {
-        if (likeInfo == null || likeInfo.getOwnerId() == null) {
-            return ResultGenerator.genFailResult("缺少参数");
+        if (likeInfo == null) {
+            return ResultGenerator.genFailResult("参数");
         }
+        logger.info(likeInfo.toString());
+
+        int ownerId = likeInfo.getOwnerId();
         String openid = jwtConfig.getOpenIdByToken(authorization);
         int userId = userService.findBy("openid", openid).getId();
-        likeInfo.setUserId(userId);
-        likeInfoService.save(likeInfo);
-
+        likeInfo = likeInfoService.findByUserIdAndOwnerId(userId, ownerId);
+        if (likeInfo != null) {
+            likeInfoService.deleteById(likeInfo.getId());
+        } else {
+            likeInfo = new LikeInfo();
+            likeInfo.setOwnerId(ownerId);
+            likeInfo.setUserId(userId);
+            likeInfoService.save(likeInfo);
+        }
         return ResultGenerator.genSuccessResult();
     }
 

@@ -1,6 +1,12 @@
 package me.xiaoyuu.course_helper.util;
 
+import cn.hutool.Hutool;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.HashUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import me.xiaoyuu.course_helper.CourseHelperApplicationTests;
+import me.xiaoyuu.course_helper.dto.CosCredential;
 import me.xiaoyuu.course_helper.dto.GradeAndCourseDTO;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
@@ -16,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import javax.xml.soap.SOAPException;
+import java.time.LocalTime;
 import java.util.List;
 
 public class SOAPUtilTest extends CourseHelperApplicationTests {
@@ -54,6 +61,12 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
         for (Course course : courseList) {
             System.out.println(course.getCourseName() + course.getCourseCredit());
         }
+    }
+
+    @Test
+    public void test4() {
+        String fileName = "abc.jpg";
+        System.out.println(fileName.split("\\.")[1]);
     }
 
 

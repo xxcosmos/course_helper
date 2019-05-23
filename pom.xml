@@ -41,6 +41,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.sun.xml.messaging.saaj/saaj-impl -->
@@ -153,7 +159,11 @@
             <artifactId>hutool-all</artifactId>
             <version>4.5.8</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.tencent.cloud</groupId>
+            <artifactId>cos-sts-java</artifactId>
+            <version>3.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -190,6 +200,18 @@
         <repository>
             <id>aliyun-repos</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>bintray-qcloud-maven-repo</id>
+            <name>qcloud-maven-repo</name>
+            <url>https://dl.bintray.com/qcloud/maven-repo/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

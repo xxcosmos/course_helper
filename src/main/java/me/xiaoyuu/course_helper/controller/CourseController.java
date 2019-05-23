@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.controller;
 
+import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
@@ -48,6 +49,7 @@ public class CourseController {
      * @param courseCode
      * @return
      */
+    @IgnoreAuth
     @GetMapping("/{courseCode}")
     public Result detail(@PathVariable String courseCode) {
         if (StringUtils.isBlank(courseCode)) {
@@ -63,6 +65,7 @@ public class CourseController {
      * 热门课程
      * @return
      */
+    @IgnoreAuth
     @GetMapping("/hot")
     public Result hottestCourse() {
         List<Course> hottestCourse = courseService.findHottestCourse(50);
@@ -87,6 +90,7 @@ public class CourseController {
      * @param keyword
      * @return
      */
+    @IgnoreAuth
     @GetMapping("/search")
     public Result search(@RequestParam String keyword) {
         logger.info(keyword);

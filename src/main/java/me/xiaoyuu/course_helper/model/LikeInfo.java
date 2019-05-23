@@ -4,6 +4,16 @@ import javax.persistence.*;
 
 @Table(name = "like_info")
 public class LikeInfo {
+    @Override
+    public String toString() {
+        return "LikeInfo{" +
+                "id=" + id +
+                ", ownerId=" + ownerId +
+                ", userId=" + userId +
+                ", type=" + type +
+                '}';
+    }
+
     /**
      * 主键id
      */
