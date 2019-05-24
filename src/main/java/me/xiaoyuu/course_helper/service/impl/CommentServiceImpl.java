@@ -31,6 +31,15 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
     @Resource
     private UserService userService;
 
+    @Override
+    public int addLike(int id) {
+        return commentMapper.addLike(id);
+    }
+
+    @Override
+    public int removeLike(int id) {
+        return commentMapper.removeLike(id);
+    }
 
     @Override
     public boolean isCommented(String ownerId, int fromId) {
@@ -41,17 +50,20 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
         return commentMapper.selectByOwnerId(ownerId);
     }
 
-    public List<CommentVO> getCommentVOByCourseCode(String courseCode) {
+    public List<CommentVO> getCommentVO(String courseCode, int userId) {
+        //拿到该课程下的所有评论
         List<Comment> commentList = findByOwnerId(courseCode);
         List<CommentVO> commentVOList = new ArrayList<>();
         for (Comment comment : commentList) {
-            Integer userId = comment.getFromId();
-            comment.setLikeNum(likeInfoService.getLikedCount(comment.getId()));
-
             CommentVO commentVO = new CommentVO();
+            commentVO.setUserVO(new UserVO(userService.findBy("id", comment.getFromId())));
             commentVO.setComment(comment);
-            commentVO.setUserVO(new UserVO(userService.findBy("id", userId)));
-            commentVO.setLike(likeInfoService.findByUserIdAndOwnerId(userId, comment.getId()) != null);
+            if (userId < 0) {
+                commentVO.setLike(false);
+            } else {
+                commentVO.setLike(likeInfoService.findByUserIdAndOwnerId(userId, comment.getId()) != null);
+
+            }
             commentVOList.add(commentVO);
         }
         return commentVOList;

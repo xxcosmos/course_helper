@@ -20,6 +20,7 @@ public class LikeInfoServiceImpl extends AbstractService<LikeInfo> implements Li
     @Resource
     private LikeInfoMapper likeInfoMapper;
 
+
     public int getLikedCount(int id) {
         return likeInfoMapper.getLikedCount(id);
     }

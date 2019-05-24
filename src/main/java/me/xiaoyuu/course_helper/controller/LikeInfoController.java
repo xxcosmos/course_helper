@@ -4,6 +4,7 @@ import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.LikeInfo;
+import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.service.LikeInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,13 +33,15 @@ public class LikeInfoController {
     private UserService userService;
     @Resource
     private JwtConfig jwtConfig;
+    @Resource
+    private CommentService commentService;
 
     @PostMapping
     public Result add(@RequestBody LikeInfo likeInfo, @RequestHeader String authorization) {
         if (likeInfo == null) {
             return ResultGenerator.genFailResult("参数");
         }
-        logger.info(likeInfo.toString());
+
 
         int ownerId = likeInfo.getOwnerId();
         String openid = jwtConfig.getOpenIdByToken(authorization);
@@ -46,11 +49,13 @@ public class LikeInfoController {
         likeInfo = likeInfoService.findByUserIdAndOwnerId(userId, ownerId);
         if (likeInfo != null) {
             likeInfoService.deleteById(likeInfo.getId());
+            commentService.removeLike(ownerId);
         } else {
             likeInfo = new LikeInfo();
             likeInfo.setOwnerId(ownerId);
             likeInfo.setUserId(userId);
             likeInfoService.save(likeInfo);
+            commentService.addLike(ownerId);
         }
         return ResultGenerator.genSuccessResult();
     }

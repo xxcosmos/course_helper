@@ -47,7 +47,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         user.setState(1);
         this.update(user);
 
-        return ResultGenerator.genSuccessResult("绑定成功");
+        return ResultGenerator.genSuccessResult();
     }
 
 }

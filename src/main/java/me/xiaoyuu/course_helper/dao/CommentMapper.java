@@ -16,4 +16,8 @@ public interface CommentMapper extends Mapper<Comment> {
     int isExisted(@Param("ownerId") String ownerId, @Param("fromId") int fromId);
 
     Double getAverageStar(@Param("ownerId") String ownerId);
+
+    int removeLike(@Param("id") int id);
+
+    int addLike(@Param("id") int id);
 }

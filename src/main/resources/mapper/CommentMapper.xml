@@ -35,6 +35,11 @@
         set like_num = like_num + 1
         where id = #{id}
     </update>
+    <update id="removeLike">
+        update comment
+        set like_num = like_num - 1
+        where id = #{id}
+    </update>
 
     <select id="isExisted" resultType="java.lang.Integer">
         select count(id)
@@ -46,7 +51,7 @@
         select distinct (owner_id) as ownerid
         from comment
         group by owner_id
-        order by count(ownerid) desc
+        order by count(ownerid) desc, create_time asc
         limit #{num}
     </select>
 

@@ -6,6 +6,7 @@ import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
+import me.xiaoyuu.course_helper.model.User;
 import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.service.CourseService;
 import com.github.pagehelper.PageHelper;
@@ -53,11 +54,16 @@ public class CourseController {
      */
     @IgnoreAuth
     @GetMapping("/{courseCode}")
-    public Result detail(@PathVariable String courseCode) {
-        if (StringUtils.isBlank(courseCode)) {
-            return ResultGenerator.genFailResult("缺少参数");
+    public Result detail(@PathVariable String courseCode, HttpServletRequest request) {
+        String authorization = request.getHeader("authorization");
+        List<CommentVO> commentVOList = null;
+        if (authorization == null) {
+            commentVOList = commentService.getCommentVO(courseCode, -1);
+        } else {
+            String openid = jwtConfig.getOpenIdByToken(authorization);
+            Integer id = userService.findBy("openid", openid).getId();
+            commentVOList = commentService.getCommentVO(courseCode, id);
         }
-        List<CommentVO> commentVOList = commentService.getCommentVOByCourseCode(courseCode);
         Course course = courseService.findBy("courseCode", courseCode);
         List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
         int averageStar = commentService.getAverageStar(courseCode);

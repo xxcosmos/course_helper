@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.controller;
 
+import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.Comment;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -58,19 +60,6 @@ public class CommentController {
 
         //Todo 删除评论
         return ResultGenerator.genSuccessResult();
-    }
-
-
-    /**
-     * 得到课程评论列表
-     *
-     * @param courseCode
-     * @return
-     */
-    @GetMapping("/course/{courseCode}")
-    public Result getCourseComments(@PathVariable String courseCode) {
-        List<CommentVO> commentVOList = commentService.getCommentVOByCourseCode(courseCode);
-        return ResultGenerator.genSuccessResult(commentVOList);
     }
 
 

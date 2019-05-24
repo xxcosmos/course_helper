@@ -72,12 +72,14 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
         }
         //存在成绩信息
         List<Course> courseList = new ArrayList<>();
+        int cnt = 0;
         for (Grade grade : gradeList) {
-            if (gradeList.indexOf(grade) == 7) {
+            if (cnt == 7) {
                 break;
             }
             if (!commentService.isCommented(grade.getCourseCode(), user.getId())) {
                 courseList.add(findBy("courseCode", grade.getCourseCode()));
+                cnt++;
             }
         }
         return courseList;

@@ -17,9 +17,13 @@ public interface CommentService extends Service<Comment> {
 
     List<String> findHottest(int num);
 
-    List<CommentVO> getCommentVOByCourseCode(String courseCode);
+    List<CommentVO> getCommentVO(String courseCode, int userId);
 
     boolean isCommented(String ownerId, int fromId);
 
     int getAverageStar(String ownerId);
+
+    int addLike(int id);
+
+    int removeLike(int id);
 }
