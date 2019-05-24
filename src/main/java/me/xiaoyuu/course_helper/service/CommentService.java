@@ -20,4 +20,6 @@ public interface CommentService extends Service<Comment> {
     List<CommentVO> getCommentVOByCourseCode(String courseCode);
 
     boolean isCommented(String ownerId, int fromId);
+
+    int getAverageStar(String ownerId);
 }

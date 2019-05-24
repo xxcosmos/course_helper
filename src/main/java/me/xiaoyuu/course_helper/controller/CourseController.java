@@ -6,7 +6,6 @@ import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
 import me.xiaoyuu.course_helper.model.Course;
-import me.xiaoyuu.course_helper.model.Grade;
 import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.service.CourseService;
 import com.github.pagehelper.PageHelper;
@@ -18,10 +17,13 @@ import me.xiaoyuu.course_helper.vo.CourseVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -58,11 +60,13 @@ public class CourseController {
         List<CommentVO> commentVOList = commentService.getCommentVOByCourseCode(courseCode);
         Course course = courseService.findBy("courseCode", courseCode);
         List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
-        return ResultGenerator.genSuccessResult(new CourseVO(course, teacherList, commentVOList));
+        int averageStar = commentService.getAverageStar(courseCode);
+        return ResultGenerator.genSuccessResult(new CourseVO(course, averageStar, teacherList, commentVOList));
     }
 
     /**
      * 热门课程
+     *
      * @return
      */
     @IgnoreAuth
@@ -74,19 +78,28 @@ public class CourseController {
 
     /**
      * 推荐课程
-     * @param authorization
+     *
+     * @param request
      * @return
      */
+    @IgnoreAuth
     @GetMapping("/recommend")
-    public Result recommendCourse(@RequestHeader String authorization) {
-        String openid = jwtConfig.getOpenIdByToken(authorization);
-        List<Course> courseList = courseService.getRecommendCourse(openid);
+    public Result recommendCourse(HttpServletRequest request) {
+        String authorization = request.getHeader("authorization");
+        List<Course> courseList = null;
+        if (authorization == null) {
+            courseList = courseService.getRecommendCourse("noOpenid");
+        } else {
+            String openid = jwtConfig.getOpenIdByToken(authorization);
+            courseList = courseService.getRecommendCourse(openid);
+        }
         return ResultGenerator.genSuccessResult(courseList);
 
     }
 
     /**
      * 对课程名模糊查询
+     *
      * @param keyword
      * @return
      */
@@ -103,10 +116,12 @@ public class CourseController {
 
     /**
      * 得到全部课程
+     *
      * @param page
      * @param size
      * @return
      */
+    @IgnoreAuth
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);

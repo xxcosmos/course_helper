@@ -31,10 +31,16 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         if (StringUtils.isBlank(student.getStudentId()) || StringUtils.isBlank(student.getStudentName())) {
             return ResultGenerator.genFailResult("缺少参数");
         }
+
         Student student1 = studentService.findBy("studentId", student.getStudentId());
         if (student1 == null || !student.getStudentName().equals(student1.getStudentName())) {
             return ResultGenerator.genFailResult("认证失败");
         }
+
+        if (userInfoMapper.isStudentIdBound(student.getStudentId()) > 0) {
+            return ResultGenerator.genFailResult("已被绑定");
+        }
+
         User user = this.findBy("openid", openid);
         user.setUpdateTime(null);
         user.setStudentId(student.getStudentId());

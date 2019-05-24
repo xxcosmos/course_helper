@@ -1,7 +1,7 @@
 package me.xiaoyuu.course_helper.util;
 
 import com.alibaba.fastjson.JSONArray;
-import me.xiaoyuu.course_helper.constant.SoapConstant;
+import me.xiaoyuu.course_helper.constant.Constant;
 import me.xiaoyuu.course_helper.dto.ChosenCourseDTO;
 import me.xiaoyuu.course_helper.dto.GradeInfoDTO;
 import org.slf4j.Logger;
@@ -13,12 +13,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static me.xiaoyuu.course_helper.constant.SoapConstant.*;
+import static me.xiaoyuu.course_helper.constant.Constant.SOAP.*;
 
 public class SoapUtil {
     private static final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
@@ -38,7 +37,7 @@ public class SoapUtil {
      * @param params 参数列表
      * @param method API
      * @return 请求对象
-     * @throws SOAPException
+     * @throws SOAPException 请求错误
      */
     private static SOAPMessage getSOAPRequest(List<String> params, String method) throws SOAPException {
         SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
@@ -80,7 +79,7 @@ public class SoapUtil {
         params.add(studentId);
         params.add(TIME_STAMP);
         params.add(HASH);
-        SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_STUDENT_GRADE);
+        SOAPMessage request = getSOAPRequest(params, Constant.SOAP.Method.GET_STUDENT_GRADE);
         SOAPMessage response = getSOAPResponse(request);
         String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
         if (checkSoapData(json, studentId)) {
@@ -128,7 +127,7 @@ public class SoapUtil {
         params.add(TIME_STAMP);
         params.add(HASH);
         //构建请求
-        SOAPMessage request = getSOAPRequest(params, SoapConstant.Method.GET_CHOSEN_COURSE);
+        SOAPMessage request = getSOAPRequest(params, Constant.SOAP.Method.GET_CHOSEN_COURSE);
         SOAPMessage response = getSOAPResponse(request);
         String json = response.getSOAPBody().getFirstChild().getFirstChild().getTextContent();
         if (checkSoapData(json, studentId)) {

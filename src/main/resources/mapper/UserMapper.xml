@@ -18,4 +18,10 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
+
+  <select id="isStudentIdBound" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(student_id)
+    from user_info
+    where student_id = #{studentId}
+  </select>
 </mapper>

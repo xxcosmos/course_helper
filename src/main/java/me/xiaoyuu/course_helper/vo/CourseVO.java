@@ -7,14 +7,24 @@ import java.util.List;
 
 public class CourseVO {
     private Course course;
+    private int averageStar;
     private List<TeacherInfoDTO> teacherList;
 
     private List<CommentVO> commentVOList;
 
-    public CourseVO(Course course, List<TeacherInfoDTO> teacherList, List<CommentVO> commentVOList) {
+    public CourseVO(Course course, int averageStar, List<TeacherInfoDTO> teacherList, List<CommentVO> commentVOList) {
         this.course = course;
+        this.averageStar = averageStar;
         this.teacherList = teacherList;
         this.commentVOList = commentVOList;
+    }
+
+    public int getAverageStar() {
+        return averageStar;
+    }
+
+    public void setAverageStar(int averageStar) {
+        this.averageStar = averageStar;
     }
 
     public List<CommentVO> getCommentVOList() {

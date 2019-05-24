@@ -61,5 +61,13 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
         return commentMapper.selectHottest(num);
     }
 
+    public int getAverageStar(String ownerId) {
+        Double averageStar = commentMapper.getAverageStar(ownerId);
+        if (averageStar == null) {
+            return 0;
+        }
+        return commentMapper.getAverageStar(ownerId).intValue();
+    }
+
 
 }

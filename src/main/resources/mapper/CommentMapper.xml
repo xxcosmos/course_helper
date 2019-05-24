@@ -49,4 +49,10 @@
         order by count(ownerid) desc
         limit #{num}
     </select>
+
+    <select id="getAverageStar" parameterType="java.lang.String" resultType="java.lang.Double">
+        select avg(star)
+        from comment
+        where owner_id = #{ownerId}
+    </select>
 </mapper>

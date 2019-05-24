@@ -4,26 +4,21 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import me.xiaoyuu.course_helper.constant.Constant;
 import me.xiaoyuu.course_helper.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static me.xiaoyuu.course_helper.constant.Constant.JWT.EXPIRE_TIME;
+import static me.xiaoyuu.course_helper.constant.Constant.JWT.SECRET_KEY;
+
 @Configuration
 public class JwtConfig {
-    private static String SECRET_KEY = "hell0n0passw0rd";
-    private static long expire_time = 3600L;
-    private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
+
     private final StringRedisTemplate stringRedisTemplate;
 
     public JwtConfig(StringRedisTemplate stringRedisTemplate) {
@@ -36,9 +31,9 @@ public class JwtConfig {
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         String token = JWT.create().withClaim("openid", user.getOpenid())
                 .withClaim("jwtId", jwtId)
-                .withExpiresAt(new Date(System.currentTimeMillis() + expire_time * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRE_TIME * 1000))
                 .sign(algorithm);
-        stringRedisTemplate.opsForValue().set("JWT-SESSION-" + jwtId, token, expire_time, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set("JWT-SESSION-" + jwtId, token, EXPIRE_TIME, TimeUnit.SECONDS);
         return token;
     }
 
@@ -51,10 +46,10 @@ public class JwtConfig {
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("openid", getOpenIdByToken(redisToken))
                     .withClaim("jwtId", getJwtIdByToken(redisToken))
-                    .acceptExpiresAt(System.currentTimeMillis() + expire_time * 1000)
+                    .acceptExpiresAt(System.currentTimeMillis() + EXPIRE_TIME * 1000)
                     .build();
             verifier.verify(redisToken);
-            stringRedisTemplate.opsForValue().set("JWT-SESSION-" + getJwtIdByToken(token), redisToken, expire_time, TimeUnit.SECONDS);
+            stringRedisTemplate.opsForValue().set("JWT-SESSION-" + getJwtIdByToken(token), redisToken, EXPIRE_TIME, TimeUnit.SECONDS);
             return true;
         } catch (Exception e) {
             return false;

@@ -42,13 +42,11 @@ public class UserController {
     public Result login(@RequestBody WeixinLoginDTO weixinLoginDTO) {
         String code = weixinLoginDTO.getCode();
         UserInfo userInfo = weixinLoginDTO.getUserInfo();
-        logger.info(code);
-        logger.info("userInfo   " + userInfo.getNickName());
         WeixinAuthDTO weixinAuthDTO = weixinService.getWeixinAuthDTO(code);
-        logger.info(weixinAuthDTO.toString());
         if (weixinAuthDTO == null || weixinAuthDTO.getErrcode() != 0) {
             return ResultGenerator.genFailResult("验证code错误");
         }
+
         //验证code正确
         User user = userService.findBy("openid", weixinAuthDTO.getOpenid());
         if (user == null) {
@@ -56,8 +54,6 @@ public class UserController {
             user = weixinService.getUser(weixinAuthDTO, userInfo);
             userService.save(user);
         }
-
-
         String token = jwtConfig.generateToken(user);
         return ResultGenerator.genSuccessResult(token);
 

@@ -51,22 +51,33 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
     }
 
     public List<Course> getRecommendCourse(String openid) {
-        User user = userService.findBy("openid", openid);
-        String studentId = user.getStudentId();
-        if (StringUtils.isBlank(studentId)) {
+        //未登录
+        if ("noOpenid".equals(openid)) {
             return this.findHottestCourse(10);
         }
 
-        List<Grade> gradeList = gradeService.findByStudentId(user.getStudentId());
+        User user = userService.findBy("openid", openid);
+        String studentId = user.getStudentId();
+
+        //已登录 未绑定学号
+        if (StringUtils.isBlank(studentId)) {
+            return this.findHottestCourse(10);
+
+        }
+        //已登录 已绑定学号
+        List<Grade> gradeList = gradeService.findByStudentId(studentId);
+        //没有成绩信息
+        if (gradeList.size() == 0) {
+            return this.findHottestCourse(10);
+        }
+        //存在成绩信息
         List<Course> courseList = new ArrayList<>();
-        int cnt = 0;
         for (Grade grade : gradeList) {
-            if (cnt > 6) {
+            if (gradeList.indexOf(grade) == 7) {
                 break;
             }
             if (!commentService.isCommented(grade.getCourseCode(), user.getId())) {
                 courseList.add(findBy("courseCode", grade.getCourseCode()));
-                cnt++;
             }
         }
         return courseList;
@@ -79,7 +90,6 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
             Course course = findBy("courseCode", s);
             courseList.add(course);
         }
-        logger.info(courseList.toString());
         return courseList;
     }
 }
