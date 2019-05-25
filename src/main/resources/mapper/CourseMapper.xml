@@ -28,4 +28,10 @@
 
     </select>
 
+    <select id="selectByCollegeCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select course_code, course_name, course_credit, course_hour, course_type, course_type_name, unit_name
+        from course
+        where course_code like concat(#{collegeCode}, '%')
+    </select>
+
 </mapper>

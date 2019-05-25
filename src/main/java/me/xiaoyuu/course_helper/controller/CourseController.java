@@ -66,6 +66,7 @@ public class CourseController {
         }
         Course course = courseService.findBy("courseCode", courseCode);
         List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
+
         int averageStar = commentService.getAverageStar(courseCode);
         return ResultGenerator.genSuccessResult(new CourseVO(course, averageStar, teacherList, commentVOList));
     }
@@ -103,6 +104,7 @@ public class CourseController {
 
     }
 
+
     /**
      * 对课程名模糊查询
      *
@@ -134,5 +136,13 @@ public class CourseController {
         List<Course> list = courseService.findAll();
         PageInfo pageInfo = new PageInfo<>(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @IgnoreAuth
+    @GetMapping("/college/{collegeCode}")
+    public Result getCourseByCollegeCode(@PathVariable String collegeCode) {
+        List<Course> courseList = courseService.selectByCollegeCode(collegeCode);
+        return ResultGenerator.genSuccessResult(courseList);
+
     }
 }

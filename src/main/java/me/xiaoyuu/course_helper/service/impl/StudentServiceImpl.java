@@ -21,6 +21,11 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     private StudentMapper studentMapper;
 
     @Override
+    public int saveIgnore(Student student) {
+        return studentMapper.insertIgnore(student);
+    }
+
+    @Override
     public List<Student> findByGrade(String grade) {
         return studentMapper.selectByGrade(grade);
     }

@@ -20,8 +20,9 @@
   </resultMap>
 
   <select id="isStudentIdBound" resultType="java.lang.Integer" parameterType="java.lang.String">
-    select count(student_id)
-    from user_info
-    where student_id = #{studentId}
+      select id
+      from user_info
+      where student_id = #{studentId}
+      limit 1
   </select>
 </mapper>

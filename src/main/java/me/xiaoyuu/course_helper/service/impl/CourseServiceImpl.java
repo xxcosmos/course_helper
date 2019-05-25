@@ -50,6 +50,10 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
         return courseMapper.selectListByKeyword(keyword);
     }
 
+    public List<Course> selectByCollegeCode(String collegeCode) {
+        return courseMapper.selectByCollegeCode(collegeCode);
+    }
+
     public List<Course> getRecommendCourse(String openid) {
         //未登录
         if ("noOpenid".equals(openid)) {

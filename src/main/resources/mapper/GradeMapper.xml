@@ -26,8 +26,8 @@
         from grade
         where course_code = #{courseCode}
           and grade >= 60
-          and teacher_name is not null
         group by teacher_name
+        order by average desc
     </select>
 
     <select id="selectByStudentId" parameterType="java.lang.String" resultMap="BaseResultMap">

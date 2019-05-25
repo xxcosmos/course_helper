@@ -13,7 +13,7 @@ public interface CommentMapper extends Mapper<Comment> {
 
     List<String> selectHottest(@Param("num") int num);
 
-    int isExisted(@Param("ownerId") String ownerId, @Param("fromId") int fromId);
+    Integer isExisted(@Param("ownerId") String ownerId, @Param("fromId") int fromId);
 
     Double getAverageStar(@Param("ownerId") String ownerId);
 

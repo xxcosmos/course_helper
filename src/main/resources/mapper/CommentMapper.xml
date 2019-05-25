@@ -42,16 +42,17 @@
     </update>
 
     <select id="isExisted" resultType="java.lang.Integer">
-        select count(id)
+        select id
         from comment
         where owner_id = #{ownerId}
           and from_id = #{fromId}
+        limit 1
     </select>
     <select id="selectHottest" resultType="java.lang.String">
         select distinct (owner_id) as ownerid
         from comment
         group by owner_id
-        order by count(ownerid) desc, create_time asc
+        order by count(ownerid) desc
         limit #{num}
     </select>
 

@@ -43,7 +43,7 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
 
     @Override
     public boolean isCommented(String ownerId, int fromId) {
-        return commentMapper.isExisted(ownerId, fromId) > 0;
+        return commentMapper.isExisted(ownerId, fromId) != null;
     }
 
     public List<Comment> findByOwnerId(String ownerId) {

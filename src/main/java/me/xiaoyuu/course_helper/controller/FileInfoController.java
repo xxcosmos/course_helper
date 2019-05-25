@@ -36,14 +36,16 @@ public class FileInfoController {
 
     @PostMapping
     public Result add(@RequestBody FileInfo fileInfo, @RequestHeader String authorization) {
-        logger.info(fileInfo.toString());
         if (!fileInfoService.checkFileInfo(fileInfo)) {
             return ResultGenerator.genFailResult("缺少参数");
         }
+        if (fileInfoService.isExist(fileInfo)) {
+            return ResultGenerator.genFailResult("文件已存在");
+        }
+
         String openId = jwtConfig.getOpenIdByToken(authorization);
         int userId = userService.findBy("openid", openId).getId();
         fileInfo = fileInfoService.completeFileInfo(fileInfo, userId);
-        logger.info(fileInfo.toString());
         fileInfoService.save(fileInfo);
         return ResultGenerator.genSuccessResult(fileInfo.getCosName());
 
@@ -57,17 +59,7 @@ public class FileInfoController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        fileInfoService.deleteById(id);
-        return ResultGenerator.genSuccessResult();
-    }
 
-    @PutMapping
-    public Result update(@RequestBody FileInfo fileInfo) {
-        fileInfoService.update(fileInfo);
-        return ResultGenerator.genSuccessResult();
-    }
 
     @IgnoreAuth
     @GetMapping("/course/file/{ownerId}")
@@ -78,11 +70,5 @@ public class FileInfoController {
         return ResultGenerator.genSuccessResult(fileInfoList);
     }
 
-    @GetMapping
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<FileInfo> list = fileInfoService.findAll();
-        PageInfo pageInfo = new PageInfo<>(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
-    }
+
 }

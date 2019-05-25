@@ -11,4 +11,6 @@ public interface CourseMapper extends Mapper<Course> {
     int insertWithIgnore(@Param("course") Course course);
 
     List<Course> selectListByKeyword(@Param("keyword") String keyword);
+
+    List<Course> selectByCollegeCode(@Param("collegeCode") String collegeCode);
 }

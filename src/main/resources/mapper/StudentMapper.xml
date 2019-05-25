@@ -16,5 +16,8 @@
         from student
         where student_id like concat(${grade}, '%')
     </select>
-
+    <insert id="insertIgnore" parameterType="me.xiaoyuu.course_helper.model.Student">
+        insert ignore into student(student_id, student_name)
+        VALUES (#{student.studentId}, #{student.studentName})
+    </insert>
 </mapper>

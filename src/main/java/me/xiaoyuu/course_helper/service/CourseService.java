@@ -15,6 +15,7 @@ public interface CourseService extends Service<Course> {
 
     List<Course> findHottestCourse(int num);
 
+    List<Course> selectByCollegeCode(String collegeCode);
     List<Course> getRecommendCourse(String openid);
     List<Course> findCourseListByKeyword(String keyword);
 }

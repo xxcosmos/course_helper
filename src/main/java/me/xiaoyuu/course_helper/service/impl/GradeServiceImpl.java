@@ -35,7 +35,19 @@ public class GradeServiceImpl extends AbstractService<Grade> implements GradeSer
 
     @Override
     public List<TeacherInfoDTO> findTeacherInfoByCourseCode(String courseCode) {
-        return gradeMapper.selectTeacherInfoByCourseCode(courseCode);
+        List<TeacherInfoDTO> teacherInfoDTOList = gradeMapper.selectTeacherInfoByCourseCode(courseCode);
+        int deleted = -1;
+        for (TeacherInfoDTO teacherInfoDTO : teacherInfoDTOList) {
+            if (teacherInfoDTO.getTeacherName() == null) {
+                deleted = teacherInfoDTOList.indexOf(teacherInfoDTO);
+                break;
+            }
+        }
+        if (deleted != -1) {
+            teacherInfoDTOList.remove(deleted);
+        }
+
+        return teacherInfoDTOList;
     }
 
     public List<Grade> findByStudentId(String studentId) {

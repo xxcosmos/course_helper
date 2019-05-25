@@ -10,4 +10,5 @@ public interface StudentMapper extends Mapper<Student> {
 
     List<Student> selectByGrade(@Param("grade") String grade);
 
+    int insertIgnore(@Param("student") Student student);
 }

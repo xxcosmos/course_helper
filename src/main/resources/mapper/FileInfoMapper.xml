@@ -41,4 +41,12 @@
         set download_count=download_count + 1
         where id = #{id}
     </update>
+
+    <select id="isExist" resultType="java.lang.Integer" parameterType="me.xiaoyuu.course_helper.model.FileInfo">
+        select id
+        from file_info
+        where owner_id = #{fileInfo.ownerId}
+          and size = #{fileInfo.size}
+        limit 1
+    </select>
 </mapper>

@@ -2,9 +2,12 @@ package me.xiaoyuu.course_helper.util;
 
 import cn.hutool.Hutool;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import me.xiaoyuu.course_helper.CourseHelperApplicationTests;
 import me.xiaoyuu.course_helper.dto.CosCredential;
 import me.xiaoyuu.course_helper.dto.GradeAndCourseDTO;
@@ -38,10 +41,12 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Test
     public void test2() {
-        List<Student> studentList = studentService.findByGrade("2015");
+//        List<Student> studentList = studentService.findByGrade("2014");
+        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
+        List<Student> studentList = reader.readAll(Student.class);
         for (Student student : studentList) {
+            studentService.saveIgnore(student);
             String studentId = student.getStudentId();
-            logger.info(studentId);
             try {
                 List<GradeAndCourseDTO> gradeAndCourseDTOList = ProcessUtil.processGradeAndChosenCourse(studentId);
                 for (GradeAndCourseDTO gradeAndCourseDTO : gradeAndCourseDTOList) {
@@ -65,8 +70,14 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Test
     public void test4() {
-        String fileName = "abc.jpg";
-        System.out.println(fileName.split("\\.")[1]);
+        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
+        List<Student> students = reader.readAll(Student.class);
+        for (Student student : students) {
+            System.out.println(student);
+            if (students.indexOf(student) == 10) {
+                break;
+            }
+        }
     }
 
 
