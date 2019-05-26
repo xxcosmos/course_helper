@@ -12,5 +12,7 @@ public interface FileInfoMapper extends Mapper<FileInfo> {
 
     Integer isExist(@Param("fileInfo") FileInfo fileInfo);
 
+    int getFileCount(@Param("ownerId") String ownerId);
+
     int addDownloadCount(@Param("id") Integer id);
 }

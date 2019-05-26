@@ -50,14 +50,14 @@ public class Comment {
      */
     @Column(name = "update_time")
     private Date updateTime;
-    private int star;
+    private int rate;
 
-    public int getStar() {
-        return star;
+    public int getRate() {
+        return rate;
     }
 
-    public void setStar(int star) {
-        this.star = star;
+    public void setRate(int rate) {
+        this.rate = rate;
     }
 
     /**
@@ -108,7 +108,7 @@ public class Comment {
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
-                ", star=" + star +
+                ", rate=" + rate +
                 '}';
     }
 

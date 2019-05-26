@@ -33,4 +33,13 @@ public class CommentVO {
     public void setUserVO(UserVO userVO) {
         this.userVO = userVO;
     }
+
+    @Override
+    public String toString() {
+        return "CommentVO{" +
+                "comment=" + comment +
+                ", userVO=" + userVO +
+                ", isLike=" + isLike +
+                '}';
+    }
 }

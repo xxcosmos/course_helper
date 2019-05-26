@@ -1,0 +1,246 @@
+---
+title: course-helper-api
+date: 2019-05-26 13:45:31
+tags:
+---
+
+# API
+
+## 一、收藏（/collection）
+
+### 1. 收藏&取消收藏（/）
+
+POST Auth
+
+##### 参数
+
+1. ownerId：课程代码
+2. type：类型 0课程，1 文件， ...其他待补充
+
+##### 返回值
+
+无
+
+
+
+
+
+
+
+## 二、课程 （/course）
+
+### 1. 用户收藏课程列表（/collection)
+
+GET Auth
+
+##### 参数
+
+无
+
+##### 返回值
+
+课程列表数组 每一个课程格式如下
+
+``` json
+[
+  {
+    "course": {
+            "courseCode": "0603016",
+            "courseName": "毛泽东思想与中国特色社会主义理论体系概论",
+            "courseCredit": "6",
+            "courseHour": 96,
+            "courseType": 1,
+            "courseTypeName": "通识教育平台课程",
+            "unitName": "马克思主义中国化系"
+        },
+    	"averageRate": 2,
+    	"commentNum": 3,
+    	"fileNum": 3,
+    	"collectionNum":4
+  }
+]
+```
+
+### 2. 热门课程 （/hot） 
+
+GET NoAuth
+
+##### 参数
+
+无
+
+##### 返回值
+
+同上
+
+### 3. 推荐课程（/recommend）
+
+分两种情况
+
+1. 已登录 GET Auth
+
+2. 未登录 GET NoAuth
+
+是否登录只需要判断微信数据缓存中是否有 token
+
+##### 参数
+
+无
+
+##### 返回值
+
+同上
+
+### 4.按学院筛选课程（/college/{collegeCode}）
+
+学院代码collegeCode直接拼接在url后面
+
+GET NoAuth
+
+##### 参数
+
+无
+
+##### 返回值
+
+同上
+
+### 5. 对课程名称模糊搜索（/search）
+
+GET NoAuth
+
+##### 参数
+
+keyword：关键词
+
+##### 返回值
+
+同上
+
+### 6. 全部课程（/）
+
+GET NoAuth
+
+##### 参数
+
+1. page：第几页
+2. size：每页数据条数
+
+##### 返回值
+
+课程列表，在返回值的list中
+
+```json
+{
+        "pageNum": 1,
+        "pageSize": 5,
+        "size": 5,
+        "orderBy": null,
+        "startRow": 1,
+        "endRow": 5,
+        "total": 2991,
+        "pages": 599,
+        "list": [
+            {
+                "course": {
+                    "courseCode": "0101015",
+                    "courseName": "工程测量",
+                    "courseCredit": "3",
+                    "courseHour": 46,
+                    "courseType": 1,
+                    "courseTypeName": "专业核心课程",
+                    "unitName": "采矿工程教研室"
+                },
+                "averageRate": 0,
+                "commentNum": 0,
+                "fileNum": 0,
+                "collectionNum": 0,
+            }
+        
+        ],
+        "prePage": 0,
+        "nextPage": 2,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "navigatePages": 8,
+        "navigateFirstPage": 1,
+        "navigateLastPage": 8,
+        "firstPage": 1,
+        "lastPage": 8
+    }
+```
+
+### 7. 课程详细信息（/{courseCode}）
+
+分两种情况
+
+1. 已登录 GET Auth
+
+2. 未登录 GET NoAuth
+
+是否登录只需要判断微信数据缓存中是否有 token
+
+##### 参数
+
+无
+
+##### 返回值
+
+```json
+{
+        "course": {
+            "courseCode": "1302083",
+            "courseName": "人工智能导论",
+            "courseCredit": "2",
+            "courseHour": 40,
+            "courseType": 2,
+            "courseTypeName": "学科基础平台课程",
+            "unitName": "软件工程教研室"
+        },
+        "teacherList": [
+            {
+                "teacherName": "杜立智",
+                "average": 72.2797619047619
+            },
+            {
+                "teacherName": "刘钊",
+                "average": 68.35207100591715
+            }
+        ],
+        "commentVOList": [
+            {
+                "comment": {
+                    "id": 30,
+                    "ownerId": "1302083",
+                    "fromId": 11,
+                    "likeNum": 1,
+                    "content": "刘老师赛高",
+                    "createTime": "2019-05-26T00:54:50.000+0000",
+                    "updateTime": "2019-05-26T00:58:55.000+0000",
+                    "rate": 3
+                },
+                "userVO": {
+                    "id": 11,
+                    "nickname": ":)",
+                    "avatarUrl": "https://wx.qlogo.cn/mmopen/vi_32/ojpyD",
+                    "gender": 2,
+                    "studentId": "201719032018",
+                    "state": 0
+                },
+                "like": false
+            }
+        ],
+   			"averageRate": 1,
+        "fileNum": 0,
+        "collectionNum": 0,
+        "collected": false
+    }
+
+```
+
+
+
+
+

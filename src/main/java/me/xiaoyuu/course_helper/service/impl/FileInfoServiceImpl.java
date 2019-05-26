@@ -26,6 +26,11 @@ public class FileInfoServiceImpl extends AbstractService<FileInfo> implements Fi
         return !(StringUtils.isBlank(fileInfo.getFileName()) || StringUtils.isBlank(fileInfo.getOwnerId()) || StringUtils.isBlank(fileInfo.getType()) || StringUtils.isBlank(fileInfo.getFileDescription()) || fileInfo.getSize() <= 0);
     }
 
+    @Override
+    public int getFileCount(String ownerId) {
+        return fileInfoMapper.getFileCount(ownerId);
+    }
+
     public boolean isExist(FileInfo fileInfo) {
         return fileInfoMapper.isExist(fileInfo) != null;
     }

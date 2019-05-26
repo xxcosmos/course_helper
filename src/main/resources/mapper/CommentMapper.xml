@@ -12,7 +12,7 @@
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="star" jdbcType="INTEGER" property="star"/>
+        <result column="rate" jdbcType="INTEGER" property="rate"/>
     </resultMap>
 
 
@@ -24,10 +24,15 @@
                content,
                create_time,
                update_time,
-               star
+               rate
         from comment
         where owner_id = #{ownerId}
         order by like_num desc
+    </select>
+    <select id="getCommentCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(id)
+        from comment
+        where owner_id = #{ownerId}
     </select>
 
     <update id="addLike">
@@ -56,8 +61,8 @@
         limit #{num}
     </select>
 
-    <select id="getAverageStar" parameterType="java.lang.String" resultType="java.lang.Double">
-        select avg(star)
+    <select id="getAverageRate" parameterType="java.lang.String" resultType="java.lang.Double">
+        select avg(rate)
         from comment
         where owner_id = #{ownerId}
     </select>

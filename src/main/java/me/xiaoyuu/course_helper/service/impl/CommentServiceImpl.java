@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.service.impl;
 
+import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.dao.CommentMapper;
 import me.xiaoyuu.course_helper.model.Comment;
 import me.xiaoyuu.course_helper.model.LikeInfo;
@@ -30,7 +31,8 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
     private LikeInfoService likeInfoService;
     @Resource
     private UserService userService;
-
+    @Resource
+    private JwtConfig jwtConfig;
     @Override
     public int addLike(int id) {
         return commentMapper.addLike(id);
@@ -50,7 +52,7 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
         return commentMapper.selectByOwnerId(ownerId);
     }
 
-    public List<CommentVO> getCommentVO(String courseCode, int userId) {
+    public List<CommentVO> getCommentVO(String courseCode, String token) {
         //拿到该课程下的所有评论
         List<Comment> commentList = findByOwnerId(courseCode);
         List<CommentVO> commentVOList = new ArrayList<>();
@@ -58,11 +60,11 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
             CommentVO commentVO = new CommentVO();
             commentVO.setUserVO(new UserVO(userService.findBy("id", comment.getFromId())));
             commentVO.setComment(comment);
-            if (userId < 0) {
+            if (token == null) {
                 commentVO.setLike(false);
             } else {
+                int userId = userService.findBy("openid", jwtConfig.getOpenIdByToken(token)).getId();
                 commentVO.setLike(likeInfoService.findByUserIdAndOwnerId(userId, comment.getId()) != null);
-
             }
             commentVOList.add(commentVO);
         }
@@ -73,13 +75,16 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
         return commentMapper.selectHottest(num);
     }
 
-    public int getAverageStar(String ownerId) {
-        Double averageStar = commentMapper.getAverageStar(ownerId);
-        if (averageStar == null) {
+    public int getAverageRate(String ownerId) {
+        Double averageRate = commentMapper.getAverageRate(ownerId);
+        if (averageRate == null) {
             return 0;
         }
-        return commentMapper.getAverageStar(ownerId).intValue();
+        return averageRate.intValue();
     }
 
-
+    @Override
+    public int getCount(String ownerId) {
+        return commentMapper.getCommentCount(ownerId);
+    }
 }

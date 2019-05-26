@@ -19,7 +19,7 @@
 
     <select id="selectByUserIdAndOwnerId"
             resultMap="BaseResultMap">
-        select id, owner_id, user_id, type
+        select id, owner_id, user_id
         from like_info
         where owner_id = #{ownerId}
           and user_id = #{userId}

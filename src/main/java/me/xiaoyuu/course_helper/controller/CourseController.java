@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.controller;
 
+import cn.hutool.db.PageResult;
 import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,19 +58,8 @@ public class CourseController {
     @GetMapping("/{courseCode}")
     public Result detail(@PathVariable String courseCode, HttpServletRequest request) {
         String authorization = request.getHeader("authorization");
-        List<CommentVO> commentVOList = null;
-        if (authorization == null) {
-            commentVOList = commentService.getCommentVO(courseCode, -1);
-        } else {
-            String openid = jwtConfig.getOpenIdByToken(authorization);
-            Integer id = userService.findBy("openid", openid).getId();
-            commentVOList = commentService.getCommentVO(courseCode, id);
-        }
-        Course course = courseService.findBy("courseCode", courseCode);
-        List<TeacherInfoDTO> teacherList = gradeService.findTeacherInfoByCourseCode(courseCode);
-
-        int averageStar = commentService.getAverageStar(courseCode);
-        return ResultGenerator.genSuccessResult(new CourseVO(course, averageStar, teacherList, commentVOList));
+        CourseVO detailCourseVO = courseService.getDetailCourseVO(courseCode, authorization);
+        return ResultGenerator.genSuccessResult(detailCourseVO);
     }
 
     /**
@@ -79,7 +70,7 @@ public class CourseController {
     @IgnoreAuth
     @GetMapping("/hot")
     public Result hottestCourse() {
-        List<Course> hottestCourse = courseService.findHottestCourse(50);
+        List<CourseVO> hottestCourse = courseService.findHottestCourse(50);
         return ResultGenerator.genSuccessResult(hottestCourse);
     }
 
@@ -93,14 +84,15 @@ public class CourseController {
     @GetMapping("/recommend")
     public Result recommendCourse(HttpServletRequest request) {
         String authorization = request.getHeader("authorization");
-        List<Course> courseList = null;
-        if (authorization == null) {
-            courseList = courseService.getRecommendCourse("noOpenid");
-        } else {
-            String openid = jwtConfig.getOpenIdByToken(authorization);
-            courseList = courseService.getRecommendCourse(openid);
-        }
-        return ResultGenerator.genSuccessResult(courseList);
+        List<CourseVO> courseVOList = courseService.getRecommendCourse(authorization);
+        return ResultGenerator.genSuccessResult(courseVOList);
+    }
+
+    @GetMapping("/collection")
+    public Result getUserCollectionCourseList(@RequestHeader String authorization) {
+
+        List<CourseVO> userCollectionCourseList = courseService.getUserCollectionCourseList(authorization);
+        return ResultGenerator.genSuccessResult(userCollectionCourseList);
 
     }
 
@@ -114,12 +106,12 @@ public class CourseController {
     @IgnoreAuth
     @GetMapping("/search")
     public Result search(@RequestParam String keyword) {
-        logger.info(keyword);
         if (StringUtils.isBlank(keyword)) {
             return ResultGenerator.genFailResult("缺少参数");
         }
-        List<Course> courseList = courseService.findCourseListByKeyword(keyword);
-        return ResultGenerator.genSuccessResult(courseList);
+
+        List<CourseVO> courseVOList = courseService.findCourseListByKeyword(keyword);
+        return ResultGenerator.genSuccessResult(courseVOList);
     }
 
     /**
@@ -134,15 +126,27 @@ public class CourseController {
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<Course> list = courseService.findAll();
+        List<CourseVO> courseVOList = new ArrayList<>();
+        for (Course course : list) {
+            courseVOList.add(courseService.getCourseVO(course.getCourseCode()));
+        }
+        logger.info(String.valueOf(courseVOList.size()));
         PageInfo pageInfo = new PageInfo<>(list);
+        pageInfo.setList(courseVOList);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    /**
+     * 按学院筛选
+     *
+     * @param collegeCode
+     * @return
+     */
     @IgnoreAuth
     @GetMapping("/college/{collegeCode}")
     public Result getCourseByCollegeCode(@PathVariable String collegeCode) {
-        List<Course> courseList = courseService.selectByCollegeCode(collegeCode);
-        return ResultGenerator.genSuccessResult(courseList);
+        List<CourseVO> courseVOList = courseService.selectByCollegeCode(collegeCode);
+        return ResultGenerator.genSuccessResult(courseVOList);
 
     }
 }

@@ -50,4 +50,16 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return ResultGenerator.genSuccessResult();
     }
 
+    public Integer getUserIdByOpenId(String openId) {
+        if (StringUtils.isBlank(openId)) {
+            return null;
+        }
+        User user = findBy("openid", openId);
+        if (user == null) {
+            return null;
+        }
+
+        return user.getId();
+    }
+
 }

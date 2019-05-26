@@ -11,4 +11,6 @@ import me.xiaoyuu.course_helper.core.service.Service;
  */
 public interface UserService extends Service<User> {
     Result bind(String openid, Student student);
+
+    Integer getUserIdByOpenId(String openId);
 }

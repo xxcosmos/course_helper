@@ -49,4 +49,10 @@
           and size = #{fileInfo.size}
         limit 1
     </select>
+
+    <select id="getFileCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(id)
+        from file_info
+        where owner_id = #{ownerId}
+    </select>
 </mapper>

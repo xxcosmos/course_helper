@@ -62,10 +62,6 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
     @Test
     public void test3() {
 
-        List<Course> courseList = courseService.findCourseListByKeyword("1");
-        for (Course course : courseList) {
-            System.out.println(course.getCourseName() + course.getCourseCredit());
-        }
     }
 
     @Test

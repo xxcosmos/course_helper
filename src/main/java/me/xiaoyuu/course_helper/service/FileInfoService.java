@@ -17,5 +17,6 @@ public interface FileInfoService extends Service<FileInfo> {
     boolean isExist(FileInfo fileInfo);
     List<FileInfo> findByOwnerIdAndType(String ownerId, String type);
 
+    int getFileCount(String ownerId);
     void addDownloadCount(Integer id);
 }
