@@ -1,11 +1,14 @@
 package me.xiaoyuu.course_helper.service.impl;
 
 import me.xiaoyuu.course_helper.config.JwtConfig;
+import me.xiaoyuu.course_helper.controller.CollectionInfoController;
 import me.xiaoyuu.course_helper.dao.CollectionInfoMapper;
 import me.xiaoyuu.course_helper.model.CollectionInfo;
 import me.xiaoyuu.course_helper.service.CollectionInfoService;
 import me.xiaoyuu.course_helper.core.service.AbstractService;
 import me.xiaoyuu.course_helper.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,8 @@ import java.util.List;
 @Service
 @Transactional
 public class CollectionInfoServiceImpl extends AbstractService<CollectionInfo> implements CollectionInfoService {
+    private final Logger logger = LoggerFactory.getLogger(CollectionInfoServiceImpl.class);
+
     @Resource
     private CollectionInfoMapper collectionInfoMapper;
     @Resource
@@ -41,13 +46,13 @@ public class CollectionInfoServiceImpl extends AbstractService<CollectionInfo> i
             return null;
         }
 
-        String openId = jwtConfig.getOpenIdByToken(token);
-        Integer userId = userService.getUserIdByOpenId(openId);
+        Integer userId = userService.getUserIdByToken(token);
         if (userId == null) {
             return null;
         }
 
-        return new CollectionInfo(ownerId, userId, type);
+        CollectionInfo collectionInfo = new CollectionInfo(ownerId, userId, type);
+        return collectionInfoMapper.selectByUserIdAndOwnerIdAndType(collectionInfo);
     }
 
     public List<CollectionInfo> getUserCollectionList(Integer userId, int type) {

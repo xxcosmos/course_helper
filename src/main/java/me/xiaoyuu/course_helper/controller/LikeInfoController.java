@@ -46,7 +46,7 @@ public class LikeInfoController {
         int ownerId = likeInfo.getOwnerId();
         String openid = jwtConfig.getOpenIdByToken(authorization);
         int userId = userService.findBy("openid", openid).getId();
-        likeInfo = likeInfoService.findByUserIdAndOwnerId(userId, ownerId);
+        likeInfo = likeInfoService.findByUserIdAndOwnerIdAndType(userId, ownerId, 0);
         if (likeInfo != null) {
             likeInfoService.deleteById(likeInfo.getId());
             commentService.removeLike(ownerId);

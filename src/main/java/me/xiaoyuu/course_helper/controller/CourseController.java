@@ -123,7 +123,7 @@ public class CourseController {
      */
     @IgnoreAuth
     @GetMapping
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);
         List<Course> list = courseService.findAll();
         List<CourseVO> courseVOList = new ArrayList<>();

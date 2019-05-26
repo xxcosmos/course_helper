@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.service.impl;
 
+import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.dao.UserMapper;
@@ -25,7 +26,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     private UserMapper userInfoMapper;
     @Resource
     private StudentService studentService;
-
+    @Resource
+    private JwtConfig jwtConfig;
 
     public Result bind(String openid, Student student) {
         if (StringUtils.isBlank(student.getStudentId()) || StringUtils.isBlank(student.getStudentName())) {
@@ -50,11 +52,15 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return ResultGenerator.genSuccessResult();
     }
 
-    public Integer getUserIdByOpenId(String openId) {
-        if (StringUtils.isBlank(openId)) {
+    public Integer getUserIdByToken(String token) {
+        if (StringUtils.isBlank(token)) {
             return null;
         }
-        User user = findBy("openid", openId);
+        String openIdByToken = jwtConfig.getOpenIdByToken(token);
+        if (StringUtils.isBlank(openIdByToken)) {
+            return null;
+        }
+        User user = findBy("openid", openIdByToken);
         if (user == null) {
             return null;
         }

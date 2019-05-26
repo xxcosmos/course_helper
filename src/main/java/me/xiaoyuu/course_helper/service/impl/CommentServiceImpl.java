@@ -64,7 +64,7 @@ public class CommentServiceImpl extends AbstractService<Comment> implements Comm
                 commentVO.setLike(false);
             } else {
                 int userId = userService.findBy("openid", jwtConfig.getOpenIdByToken(token)).getId();
-                commentVO.setLike(likeInfoService.findByUserIdAndOwnerId(userId, comment.getId()) != null);
+                commentVO.setLike(likeInfoService.findByUserIdAndOwnerIdAndType(userId, comment.getId(), 0) != null);
             }
             commentVOList.add(commentVO);
         }

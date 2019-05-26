@@ -34,8 +34,9 @@ public class CollectionInfoController {
 
     @PostMapping
     public Result add(@RequestBody CollectionInfo collectionInfo, @RequestHeader String authorization) {
+        logger.info(authorization);
         logger.info(collectionInfo.toString());
-        if (collectionInfo == null || StringUtils.isBlank(collectionInfo.getOwnerId()) || collectionInfo.getType() == null) {
+        if (StringUtils.isBlank(collectionInfo.getOwnerId()) || collectionInfo.getType() == null) {
             return ResultGenerator.genFailResult("缺少参数");
         }
         String ownerId = collectionInfo.getOwnerId();
@@ -43,14 +44,16 @@ public class CollectionInfoController {
         boolean exist = collectionInfoService.isExist(ownerId, authorization, type);
         if (exist) {
             CollectionInfo collectionInfo1 = collectionInfoService.getCollectionInfo(ownerId, authorization, type);
+            logger.info("exist delete");
             collectionInfoService.deleteById(collectionInfo1.getId());
+            return ResultGenerator.genSuccessResult(0);
         } else {
-            collectionInfo.setUserId(userService.getUserIdByOpenId(jwtConfig.getOpenIdByToken(authorization)));
+            collectionInfo.setUserId(userService.getUserIdByToken(authorization));
             collectionInfoService.save(collectionInfo);
+            return ResultGenerator.genSuccessResult(1);
         }
 
 
-        return ResultGenerator.genSuccessResult();
     }
 
 

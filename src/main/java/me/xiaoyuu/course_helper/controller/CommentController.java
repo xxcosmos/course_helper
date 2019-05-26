@@ -6,6 +6,7 @@ import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.Comment;
 import me.xiaoyuu.course_helper.service.CommentService;
 import me.xiaoyuu.course_helper.service.LikeInfoService;
+import me.xiaoyuu.course_helper.service.UserService;
 import me.xiaoyuu.course_helper.vo.CommentVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,7 +30,8 @@ public class CommentController {
     private CommentService commentService;
     @Resource
     private LikeInfoService likeInfoService;
-
+    @Resource
+    private UserService userService;
     /**
      * 添加评论
      *
@@ -46,7 +48,7 @@ public class CommentController {
             return ResultGenerator.genFailResult("请求参数有误");
         }
         commentService.save(comment);
-        return ResultGenerator.genSuccessResult();
+        return ResultGenerator.genSuccessResult("success");
     }
 
     /**
@@ -55,11 +57,19 @@ public class CommentController {
      * @param id
      * @return
      */
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public Result delete(@PathVariable Integer id, @RequestHeader String authorization) {
 
-        //Todo 删除评论
-        return ResultGenerator.genSuccessResult();
+        Comment comment = commentService.findById(id);
+        if (comment == null) {
+            return ResultGenerator.genFailResult("不存在");
+        }
+
+        if (!comment.getFromId().equals(userService.getUserIdByToken(authorization))) {
+            return ResultGenerator.genFailResult("权限错误");
+        }
+        commentService.deleteById(id);
+        return ResultGenerator.genSuccessResult("success");
     }
 
 

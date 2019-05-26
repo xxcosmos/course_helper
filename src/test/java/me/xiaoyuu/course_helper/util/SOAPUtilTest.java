@@ -12,8 +12,10 @@ import me.xiaoyuu.course_helper.CourseHelperApplicationTests;
 import me.xiaoyuu.course_helper.dto.CosCredential;
 import me.xiaoyuu.course_helper.dto.GradeAndCourseDTO;
 import me.xiaoyuu.course_helper.dto.TeacherInfoDTO;
+import me.xiaoyuu.course_helper.model.CollectionInfo;
 import me.xiaoyuu.course_helper.model.Course;
 import me.xiaoyuu.course_helper.model.Student;
+import me.xiaoyuu.course_helper.service.CollectionInfoService;
 import me.xiaoyuu.course_helper.service.CourseService;
 import me.xiaoyuu.course_helper.service.GradeService;
 import me.xiaoyuu.course_helper.service.StudentService;
@@ -37,7 +39,8 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
     @Resource
     StudentService studentService;
 
-
+    @Resource
+    CollectionInfoService collectionInfoService;
 
     @Test
     public void test2() {
@@ -61,7 +64,10 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Test
     public void test3() {
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbzRLYTVZajFWOHZ6d2JoS3Q3NHZ5YnBuN3lnIiwiZXhwIjoxNTU4ODU4MTcxLCJqd3RJZCI6IjcyYzBjNWE4LTNhOTMtNDg4OS1iYTRmLWJjYzc2ZTRkZDM3MyJ9.lyMbwx7s_tmTOSwO4m9MmrDP3ftJb2tczNGIzM9yNXU";
 
+        boolean exist = collectionInfoService.isExist("0603016", token, 0);
+        System.out.println(exist);
     }
 
     @Test

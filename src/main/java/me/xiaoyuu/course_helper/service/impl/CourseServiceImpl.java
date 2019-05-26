@@ -133,8 +133,7 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
     }
 
     public List<CourseVO> getUserCollectionCourseList(String token) {
-        String openIdByToken = jwtConfig.getOpenIdByToken(token);
-        Integer userIdByOpenId = userService.getUserIdByOpenId(openIdByToken);
+        Integer userIdByOpenId = userService.getUserIdByToken(token);
         List<CollectionInfo> userCollectionList = collectionInfoService.getUserCollectionList(userIdByOpenId, 0);
         List<CourseVO> courseVOList = new ArrayList<>();
         for (CollectionInfo collectionInfo : userCollectionList) {
