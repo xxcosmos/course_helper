@@ -1,6 +1,7 @@
 package me.xiaoyuu.course_helper.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import me.xiaoyuu.course_helper.dao.FileInfoMapper;
 import me.xiaoyuu.course_helper.model.FileInfo;
 import me.xiaoyuu.course_helper.service.FileInfoService;
@@ -22,8 +23,8 @@ public class FileInfoServiceImpl extends AbstractService<FileInfo> implements Fi
     @Resource
     private FileInfoMapper fileInfoMapper;
 
-    public boolean checkFileInfo(FileInfo fileInfo) {
-        return !(StringUtils.isBlank(fileInfo.getFileName()) || StringUtils.isBlank(fileInfo.getOwnerId()) || StringUtils.isBlank(fileInfo.getType()) || StringUtils.isBlank(fileInfo.getFileDescription()) || fileInfo.getSize() <= 0);
+    public boolean isFileValidated(FileInfo fileInfo) {
+        return !(!containExtension(fileInfo.getFileName()) || StringUtils.isBlank(fileInfo.getOwnerId()) || StringUtils.isBlank(fileInfo.getFileDescription()) || fileInfo.getSize() <= 0);
     }
 
     @Override
@@ -34,13 +35,23 @@ public class FileInfoServiceImpl extends AbstractService<FileInfo> implements Fi
     public boolean isExist(FileInfo fileInfo) {
         return fileInfoMapper.isExist(fileInfo) != null;
     }
+
     public void addDownloadCount(Integer id) {
         fileInfoMapper.addDownloadCount(id);
     }
 
     @Override
-    public List<FileInfo> findByOwnerIdAndType(String ownerId, String type) {
-        return fileInfoMapper.selectByOwnerIdAndType(ownerId, type);
+    public List<FileInfo> findByOwnerIdAndType(String ownerId) {
+        return fileInfoMapper.selectByOwnerIdAndType(ownerId);
+    }
+
+    public boolean containExtension(String fileName) {
+        if (StrUtil.isBlank(fileName)) {
+            return false;
+        }
+        String[] split = fileName.split("\\.");
+        return split.length > 1;
+
     }
 
     public FileInfo completeFileInfo(FileInfo fileInfo, int userId) {

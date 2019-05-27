@@ -27,7 +27,7 @@
                rate
         from comment
         where owner_id = #{ownerId}
-        order by like_num desc
+        order by like_num desc, update_time desc
     </select>
     <select id="getCommentCount" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(id)

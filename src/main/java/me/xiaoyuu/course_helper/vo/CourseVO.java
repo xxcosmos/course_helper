@@ -15,6 +15,20 @@ public class CourseVO {
     private boolean isCollected;
     private int collectionNum;
 
+    @Override
+    public String toString() {
+        return "CourseVO{" +
+                "course=" + course +
+                ", averageRate=" + averageRate +
+                ", teacherList=" + teacherList +
+                ", commentVOList=" + commentVOList +
+                ", commentNum=" + commentNum +
+                ", fileNum=" + fileNum +
+                ", isCollected=" + isCollected +
+                ", collectionNum=" + collectionNum +
+                '}';
+    }
+
     public CourseVO(Course course, int averageRate, int commentNum, int fileNum, int collectionNum) {
         this.course = course;
         this.averageRate = averageRate;

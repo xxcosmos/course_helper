@@ -10,12 +10,13 @@ import java.util.List;
  * Created by xiaoyuu on 2019/05/24.
  */
 public interface FileInfoService extends Service<FileInfo> {
-    boolean checkFileInfo(FileInfo fileInfo);
+    boolean isFileValidated(FileInfo fileInfo);
 
     FileInfo completeFileInfo(FileInfo fileInfo, int userId);
 
     boolean isExist(FileInfo fileInfo);
-    List<FileInfo> findByOwnerIdAndType(String ownerId, String type);
+
+    List<FileInfo> findByOwnerIdAndType(String ownerId);
 
     int getFileCount(String ownerId);
     void addDownloadCount(Integer id);

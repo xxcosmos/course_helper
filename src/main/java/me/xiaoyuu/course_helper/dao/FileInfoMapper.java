@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.List;
 
 public interface FileInfoMapper extends Mapper<FileInfo> {
-    List<FileInfo> selectByOwnerIdAndType(@Param("ownerId") String ownerId, @Param("type") String type);
+    List<FileInfo> selectByOwnerIdAndType(@Param("ownerId") String ownerId);
 
     Integer isExist(@Param("fileInfo") FileInfo fileInfo);
 

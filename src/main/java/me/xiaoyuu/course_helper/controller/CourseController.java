@@ -59,6 +59,7 @@ public class CourseController {
     public Result detail(@PathVariable String courseCode, HttpServletRequest request) {
         String authorization = request.getHeader("authorization");
         CourseVO detailCourseVO = courseService.getDetailCourseVO(courseCode, authorization);
+        logger.info(detailCourseVO.toString());
         return ResultGenerator.genSuccessResult(detailCourseVO);
     }
 

@@ -1,20 +1,15 @@
 package me.xiaoyuu.course_helper.controller;
 
-import cn.hutool.core.util.IdUtil;
 import me.xiaoyuu.course_helper.annotation.IgnoreAuth;
 import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.core.result.Result;
 import me.xiaoyuu.course_helper.core.result.ResultGenerator;
 import me.xiaoyuu.course_helper.model.FileInfo;
 import me.xiaoyuu.course_helper.service.FileInfoService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import me.xiaoyuu.course_helper.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,7 +31,7 @@ public class FileInfoController {
 
     @PostMapping
     public Result add(@RequestBody FileInfo fileInfo, @RequestHeader String authorization) {
-        if (!fileInfoService.checkFileInfo(fileInfo)) {
+        if (!fileInfoService.isFileValidated(fileInfo)) {
             return ResultGenerator.genFailResult("缺少参数");
         }
         if (fileInfoService.isExist(fileInfo)) {
@@ -60,12 +55,11 @@ public class FileInfoController {
     }
 
 
-
     @IgnoreAuth
     @GetMapping("/course/file/{ownerId}")
     public Result getFileList(@PathVariable String ownerId) {
         logger.info(ownerId);
-        List<FileInfo> fileInfoList = fileInfoService.findByOwnerIdAndType(ownerId, "file");
+        List<FileInfo> fileInfoList = fileInfoService.findByOwnerIdAndType(ownerId);
         logger.info(fileInfoList.toString());
         return ResultGenerator.genSuccessResult(fileInfoList);
     }
