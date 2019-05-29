@@ -38,7 +38,7 @@ public class LikeInfoController {
 
     @PostMapping
     public Result add(@RequestBody LikeInfo likeInfo, @RequestHeader String authorization) {
-        if (likeInfo == null) {
+        if (likeInfo == null || likeInfo.getOwnerId() == null) {
             return ResultGenerator.genFailResult("参数");
         }
 

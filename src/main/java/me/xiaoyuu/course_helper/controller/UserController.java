@@ -44,7 +44,7 @@ public class UserController {
         UserInfo userInfo = weixinLoginDTO.getUserInfo();
         WeixinAuthDTO weixinAuthDTO = weixinService.getWeixinAuthDTO(code);
         if (weixinAuthDTO == null || weixinAuthDTO.getErrcode() != 0) {
-            return ResultGenerator.genFailResult("验证code错误");
+            return ResultGenerator.genFailResult("验证错误");
         }
 
         //验证code正确
@@ -53,6 +53,13 @@ public class UserController {
             //新注册
             user = weixinService.getUser(weixinAuthDTO, userInfo);
             userService.save(user);
+        } else {
+            user.setNickname(userInfo.getNickName());
+            user.setCity(userInfo.getCity());
+            user.setAvatarUrl(userInfo.getAvatarUrl());
+            user.setGender(userInfo.getGender());
+            user.setProvince(userInfo.getProvince());
+            userService.update(user);
         }
         String token = jwtConfig.generateToken(user);
         return ResultGenerator.genSuccessResult(token);

@@ -5,5 +5,5 @@ import me.xiaoyuu.course_helper.model.User;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper extends Mapper<User> {
-    public int isStudentIdBound(@Param("studentId") String studentId);
+    int isStudentIdBound(@Param("studentId") String studentId);
 }

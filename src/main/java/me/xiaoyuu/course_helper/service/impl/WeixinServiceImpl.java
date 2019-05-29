@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.service.impl;
 
+import me.xiaoyuu.course_helper.constant.Constant;
 import me.xiaoyuu.course_helper.dto.WeixinAuthDTO;
 import me.xiaoyuu.course_helper.dto.UserInfo;
 import me.xiaoyuu.course_helper.model.User;
@@ -17,17 +18,14 @@ import javax.annotation.Resource;
 public class WeixinServiceImpl implements WeixinService {
     @Resource
     RestTemplate restTemplate;
-    @Value("${wx.applet.app-id}")
-    private String appid;
-    @Value("${wx.applet.app-secret}")
-    private String appSecret;
+
 
     public WeixinAuthDTO getWeixinAuthDTO(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
         }
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid={1}&secret={2}&js_code={3}&grant_type=authorization_code";
-        return restTemplate.getForObject(url, WeixinAuthDTO.class, appid, appSecret, code);
+        return restTemplate.getForObject(url, WeixinAuthDTO.class, Constant.Weixin.APP_ID, Constant.Weixin.APP_SECRET, code);
     }
 
     public User getUser(WeixinAuthDTO weixinAuthDTO, UserInfo weixinUserInfoDTO) {

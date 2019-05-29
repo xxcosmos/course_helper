@@ -35,7 +35,7 @@ public class FileInfoController {
             return ResultGenerator.genFailResult("缺少参数");
         }
         if (fileInfoService.isExist(fileInfo)) {
-            return ResultGenerator.genSuccessResult("文件已存在");
+            return ResultGenerator.genFailResult("文件已存在");
         }
 
         String openId = jwtConfig.getOpenIdByToken(authorization);

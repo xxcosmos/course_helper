@@ -1,5 +1,6 @@
 package me.xiaoyuu.course_helper.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import me.xiaoyuu.course_helper.config.JwtConfig;
 import me.xiaoyuu.course_helper.dao.CommentMapper;
 import me.xiaoyuu.course_helper.dao.CourseMapper;
@@ -73,6 +74,23 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
     }
 
     /**
+     * 随机获取课程
+     *
+     * @return
+     */
+    public List<CourseVO> getRandomCourseVOList() {
+        List<Course> courseList = courseMapper.selectByCourseTypeName("学科基础平台课程");
+        courseList.addAll(courseMapper.selectByCourseTypeName("通识教育平台课程"));
+        List<CourseVO> courseVOList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            int randomInt = RandomUtil.randomInt(0, courseList.size() - 1);
+            CourseVO courseVO = getCourseVO(courseList.get(randomInt).getCourseCode());
+            courseVOList.add(courseVO);
+        }
+        return courseVOList;
+    }
+
+    /**
      * 推荐课程
      *
      * @param token
@@ -80,7 +98,7 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
      */
     public List<CourseVO> getRecommendCourse(String token) {
         if (token == null) {
-            return this.findHottestCourse(10);
+            return getRandomCourseVOList();
         }
         String openid = jwtConfig.getOpenIdByToken(token);
         if (openid == null) {
@@ -92,7 +110,7 @@ public class CourseServiceImpl extends AbstractService<Course> implements Course
         String studentId = user.getStudentId();
         if (StringUtils.isBlank(studentId)) {
             //已登录 未绑定学号
-            return this.findHottestCourse(10);
+            return getRandomCourseVOList();
         }
 
         List<Grade> gradeList = gradeService.findByStudentId(studentId);

@@ -42,45 +42,45 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
     @Resource
     CollectionInfoService collectionInfoService;
 
-    @Test
-    public void test2() {
-//        List<Student> studentList = studentService.findByGrade("2014");
-        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
-        List<Student> studentList = reader.readAll(Student.class);
-        for (Student student : studentList) {
-            studentService.saveIgnore(student);
-            String studentId = student.getStudentId();
-            try {
-                List<GradeAndCourseDTO> gradeAndCourseDTOList = ProcessUtil.processGradeAndChosenCourse(studentId);
-                for (GradeAndCourseDTO gradeAndCourseDTO : gradeAndCourseDTOList) {
-                    courseService.saveWithIgnore(gradeAndCourseDTO.getCourse());
-                    gradeService.saveWithIgnore(gradeAndCourseDTO.getGrade());
-                }
-            } catch (SOAPException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Test
-    public void test3() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbzRLYTVZajFWOHZ6d2JoS3Q3NHZ5YnBuN3lnIiwiZXhwIjoxNTU4ODU4MTcxLCJqd3RJZCI6IjcyYzBjNWE4LTNhOTMtNDg4OS1iYTRmLWJjYzc2ZTRkZDM3MyJ9.lyMbwx7s_tmTOSwO4m9MmrDP3ftJb2tczNGIzM9yNXU";
-
-        boolean exist = collectionInfoService.isExist("0603016", token, 0);
-        System.out.println(exist);
-    }
-
-    @Test
-    public void test4() {
-        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
-        List<Student> students = reader.readAll(Student.class);
-        for (Student student : students) {
-            System.out.println(student);
-            if (students.indexOf(student) == 10) {
-                break;
-            }
-        }
-    }
+//    @Test
+//    public void test2() {
+////        List<Student> studentList = studentService.findByGrade("2014");
+//        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
+//        List<Student> studentList = reader.readAll(Student.class);
+//        for (Student student : studentList) {
+//            studentService.saveIgnore(student);
+//            String studentId = student.getStudentId();
+//            try {
+//                List<GradeAndCourseDTO> gradeAndCourseDTOList = ProcessUtil.processGradeAndChosenCourse(studentId);
+//                for (GradeAndCourseDTO gradeAndCourseDTO : gradeAndCourseDTOList) {
+//                    courseService.saveWithIgnore(gradeAndCourseDTO.getCourse());
+//                    gradeService.saveWithIgnore(gradeAndCourseDTO.getGrade());
+//                }
+//            } catch (SOAPException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//
+//    @Test
+//    public void test3() {
+//        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbzRLYTVZajFWOHZ6d2JoS3Q3NHZ5YnBuN3lnIiwiZXhwIjoxNTU4ODU4MTcxLCJqd3RJZCI6IjcyYzBjNWE4LTNhOTMtNDg4OS1iYTRmLWJjYzc2ZTRkZDM3MyJ9.lyMbwx7s_tmTOSwO4m9MmrDP3ftJb2tczNGIzM9yNXU";
+//
+//        boolean exist = collectionInfoService.isExist("0603016", token, 0);
+//        System.out.println(exist);
+//    }
+//
+//    @Test
+//    public void test4() {
+//        ExcelReader reader = ExcelUtil.getReader(ResourceUtil.getStream("nameList.xlsx"));
+//        List<Student> students = reader.readAll(Student.class);
+//        for (Student student : students) {
+//            System.out.println(student);
+//            if (students.indexOf(student) == 10) {
+//                break;
+//            }
+//        }
+//    }
 
 
 }
