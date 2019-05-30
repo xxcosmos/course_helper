@@ -52,5 +52,12 @@ public class CollectionInfoController {
 
     }
 
+    @GetMapping
+    public Result getUserCollectionList(@RequestHeader String authorization) {
+        Integer userIdByToken = userService.getUserIdByToken(authorization);
+        List<CollectionInfo> userCollectionList = collectionInfoService.getUserCollectionList(userIdByToken, 0);
+        return ResultGenerator.genSuccessResult(userCollectionList);
+    }
+
 
 }

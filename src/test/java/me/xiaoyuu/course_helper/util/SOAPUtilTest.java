@@ -41,7 +41,6 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 
     @Resource
     CollectionInfoService collectionInfoService;
-
 //    @Test
 //    public void test2() {
 ////        List<Student> studentList = studentService.findByGrade("2014");
@@ -64,10 +63,8 @@ public class SOAPUtilTest extends CourseHelperApplicationTests {
 //
 //    @Test
 //    public void test3() {
-//        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvbzRLYTVZajFWOHZ6d2JoS3Q3NHZ5YnBuN3lnIiwiZXhwIjoxNTU4ODU4MTcxLCJqd3RJZCI6IjcyYzBjNWE4LTNhOTMtNDg4OS1iYTRmLWJjYzc2ZTRkZDM3MyJ9.lyMbwx7s_tmTOSwO4m9MmrDP3ftJb2tczNGIzM9yNXU";
-//
-//        boolean exist = collectionInfoService.isExist("0603016", token, 0);
-//        System.out.println(exist);
+//        List<CollectionInfo> userCollectionList = collectionInfoService.getUserCollectionList(10, 0);
+//        System.out.println(userCollectionList);
 //    }
 //
 //    @Test
